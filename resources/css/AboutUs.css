@@ -1,0 +1,32 @@
+.facilities_row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px; 
+    justify-content: center;
+  }
+  
+  .facilities_item {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 150px;
+    width: 100%; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .facilities_item h4 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+  }
+  
+  .facilities_item p {
+    flex-grow: 1; 
+    margin-bottom: 0;
+  }
+
+  .facilities_area{
+    background: url("./images/Hung/facilites_bg.jpg") no-repeat scroll center 0/cover;
+  }

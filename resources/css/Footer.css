@@ -1,0 +1,22 @@
+.footer-setup {
+  padding: 20px;
+
+}
+
+.nav-link {
+  color: #6c6c6e;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #e09d38;
+}
+
+.list_style li{
+  margin: 5px;
+}
+
+.Link-setup li {
+  list-style-type: none;
+}
