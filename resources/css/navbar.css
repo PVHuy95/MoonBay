@@ -8,3 +8,8 @@
     font-weight: 600; 
   }
   
+  .navbar-hidden {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+  }
+  

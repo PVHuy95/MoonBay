@@ -8,22 +8,28 @@ const Navbar = () => {
   const location = useLocation();
 
   useEffect(() => {
+    let lastScrollTop = 0;
+  
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 50;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
+      const currentScrollTop = window.scrollY;
+      setScrolled(currentScrollTop > 50);
+  
+      // Check scroll direction
+      if (currentScrollTop > lastScrollTop) {
+        // Scrolling down
+        document.querySelector('.navbar').classList.add('navbar-hidden');
+      } else {
+        // Scrolling up
+        document.querySelector('.navbar').classList.remove('navbar-hidden');
       }
+  
+      lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
     };
-
+  
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [scrolled]);
-  const top = () => {
-    window.scroll({
-      top: 0,
-      behavior: 'smooth'
-    })
-  }
+  }, []);
+  
   return (
     <nav
       className={`navbar navbar-expand-lg fixed-top ${scrolled ? 'bg-dark' : 'bg-transparent'
