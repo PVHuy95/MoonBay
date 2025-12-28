@@ -1,7 +1,7 @@
 import '../../../css/home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../axios-config';
 
 const EditOffer = () => {
     const [offers, setOffers] = useState([]);

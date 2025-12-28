@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../AuthContext';
-import axios from 'axios';
+import axios from '../../axios-config';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import SortStart from '../SortStart';
 import { ToastContainer, toast } from "react-toastify";

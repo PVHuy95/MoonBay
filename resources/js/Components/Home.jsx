@@ -1,7 +1,7 @@
 import '../../css/home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../axios-config';
 import { Link } from 'react-router-dom';
 
 const Home = () => {

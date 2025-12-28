@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { format, getDaysInMonth, addMonths, subMonths, startOfDay, isSameDay, isAfter, isBefore, isWithinInterval } from 'date-fns';
 import { enUS } from 'date-fns/locale';
-import axios from 'axios';
+import axios from '../../axios-config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tooltip } from 'bootstrap';
 import '../../../css/css_of_admin/ManageBooking.css';

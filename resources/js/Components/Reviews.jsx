@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from 'axios';
+import axios from '../axios-config';
 import { AuthContext } from "./AuthContext";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import SortStart from "./SortStart";

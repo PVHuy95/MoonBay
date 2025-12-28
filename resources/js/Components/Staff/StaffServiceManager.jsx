@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Edit, Save, X, Plus, Trash2, Loader2, Info, DollarSign, ArrowUp, ArrowDown } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import axios from '../../axios-config';
 import Cookies from 'js-cookie';
 import '../../../css/css_of_staff/StaffServiceManager.css';
 
