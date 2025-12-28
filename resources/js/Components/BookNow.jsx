@@ -82,7 +82,8 @@ const BookNow = ({ checkLogins }) => {
                                     {/* Hình ảnh với nút Book Now */}
                                     <div className="image-wrapper">
                                         <img
-                                            src={`/storage/${room.image}`}
+                                            // src={`/storage/${room.image}`}
+                                            src={room.image || '/images/default-room.png'}
                                             alt={room.name}
                                             className="room-image"
                                         />

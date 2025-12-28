@@ -13,7 +13,8 @@ class RoomController extends Controller
     public function index()
     {
         $roomTypes = RoomType::all()->map(function ($roomType) {
-            $roomType->image_url = $roomType->image ? asset('storage/' . $roomType->image) : null;
+            // $roomType->image_url = $roomType->image ? asset('storage/' . $roomType->image) : null;
+            $roomType->image_url = $roomType->image;
             return $roomType;
         });
 
@@ -196,9 +197,20 @@ class RoomController extends Controller
     public function destroy(RoomType $room_type)
     {
         try {
-            if ($room_type->image && Storage::disk('public')->exists($room_type->image)) {
-                Storage::disk('public')->delete($room_type->image);
-                Log::info('Image deleted successfully:', ['file' => $room_type->image]);
+            // if ($room_type->image && Storage::disk('public')->exists($room_type->image)) {
+            //     Storage::disk('public')->delete($room_type->image);
+            //     Log::info('Image deleted successfully:', ['file' => $room_type->image]);
+            // }
+            if ($room_type->image) {
+                try {
+                    $publicId = extractCloudinaryPublicId($room_type->image);
+                    if ($publicId) {
+                        Cloudinary::destroy($publicId);
+                        Log::info('Image deleted from Cloudinary:', ['publicId' => $publicId]);
+                    }
+                } catch (\Exception $e) {
+                    Log::warning('Failed to delete image from Cloudinary', ['error' => $e->getMessage()]);
+                }
             }
 
             $room_type->delete();

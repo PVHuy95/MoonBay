@@ -13,9 +13,9 @@ const formatCurrency = (amount) => {
   const amountInDong = amount < 10000 ? amount * 1000 : amount;
 
   return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      minimumFractionDigits: 0, // VND không có số lẻ
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 0, // VND không có số lẻ
   }).format(amountInDong);
 };
 
@@ -85,7 +85,15 @@ const Rooms = ({ checkLogins }) => {
                   }`}
               >
                 <div className="room-image">
-                  <img src={`/storage/${room.image}`} alt={room.name} />
+                  {/* <img src={`/storage/${room.image}`} alt={room.name} /> */}
+                  <img
+                    src={room.image || '/images/default-room.png'}
+                    alt={room.name}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/images/default-room.png';
+                    }}
+                  />
                 </div>
                 <div className="room-info p-4">
                   <h5 className="mb-3">{room.name} ROOM</h5>

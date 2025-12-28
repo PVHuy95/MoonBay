@@ -206,7 +206,8 @@ const Navbar = ({ openLoginPopup }) => {
                   onClick={() => document.getElementById("userDropdownMenu").classList.toggle("show")}
                 >
                   <img
-                    src={isLocalAccount ? `/storage/${user.avatar}` : user.avatar}
+                    // src={isLocalAccount ? `/storage/${user.avatar}` : user.avatar}
+                    src={user.avatar || '/images/Dat/avatar/default.png'}
                     alt="Avatar"
                     width="40"
                     height="40"

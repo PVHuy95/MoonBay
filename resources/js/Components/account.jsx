@@ -285,7 +285,8 @@ const Account = () => {
                             {isLocalAccount && isEditing ? (
                                 <>
                                     <img
-                                        src={avatarPreview || `/storage/${user.avatar}`}
+                                        // src={avatarPreview || `/storage/${user.avatar}`}
+                                        src={avatarPreview || user.avatar || '/images/Dat/avatar/default.png'}
                                         alt="Avatar Preview"
                                         className="rounded-circle account-avatar"
                                         key={Date.now()}
@@ -303,8 +304,8 @@ const Account = () => {
                                 </>
                             ) : (
                                 <img
-                                    // src={user.avatar || '/images/Dat/avatar/default.png'} // Không thêm tiền tố /storage/
-                                    src={isLocalAccount ? `/storage/${user.avatar}` : user.avatar}
+                                    // src={isLocalAccount ? `/storage/${user.avatar}` : user.avatar}
+                                    src={user.avatar || '/images/Dat/avatar/default.png'}
                                     alt="Avatar"
                                     className="rounded-circle account-avatar"
                                     onError={(e) => {

@@ -76,11 +76,16 @@ export const ChatbotProvider = ({ children, isOpen: propIsOpen, setIsOpen: propS
 
       const isImage = /\.(jpg|jpeg|png|gif)$/i.test(url);
       if (isImage) {
-        const fullUrl = url.startsWith('/') ? `/storage${url}` : `/storage/${url}`;
+        // const fullUrl = url.startsWith('/') ? `/storage${url}` : `/storage/${url}`;
+        // parts.push(
+        //   <div key={startIndex} className="chatbot-image">
+        //     <img src={fullUrl} alt={linkText} style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }} onError={(e) => console.log("Image load error:", e)} />
+        //   </div>
+        const fullUrl = url.startsWith('http') ? url : (url.startsWith('/') ? `/storage${url}` : `/storage/${url}`);
         parts.push(
-          <div key={startIndex} className="chatbot-image">
-            <img src={fullUrl} alt={linkText} style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }} onError={(e) => console.log("Image load error:", e)} />
-          </div>
+            <div key={startIndex} className="chatbot-image">
+                <img src={fullUrl} alt={linkText} style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }} onError={(e) => console.log("Image load error:", e)} />
+            </div>
         );
       } else {
         parts.push(

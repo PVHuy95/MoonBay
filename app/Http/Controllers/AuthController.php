@@ -246,9 +246,10 @@ class AuthController extends Controller
         ]);
 
         // Sử dụng giá trị avatar từ database, nếu null thì giữ giá trị cũ từ prevUser
-        $avatarUrl = !empty($updatedUser->avatar)
-            ? url('/storage/' . $updatedUser->avatar)
-            : ($user->avatar ? url('/storage/' . $user->avatar) : '/images/Dat/avatar/default.png');
+        // $avatarUrl = !empty($updatedUser->avatar)
+        //     ? url('/storage/' . $updatedUser->avatar)
+        //     : ($user->avatar ? url('/storage/' . $user->avatar) : '/images/Dat/avatar/default.png');
+        $avatarUrl = $updatedUser->avatar ?? '/images/Dat/avatar/default.png';
 
         Log::info('Avatar URL:', ['url' => $avatarUrl]);
 
