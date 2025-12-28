@@ -22,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+        
+        // Force HTTPS trong production (fix Mixed Content trên Render)
+        if ($this->app->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+        
         ResetPassword::createUrlUsing(function ($notifiable, string $token) {
             return config('app.frontend_url') . "/reset-password?token={$token}&email=" . urlencode($notifiable->getEmailForPasswordReset());
         });
