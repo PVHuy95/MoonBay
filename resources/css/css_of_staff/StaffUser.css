@@ -1,0 +1,117 @@
+.staff-user-page .staff-users-container {
+    padding: 10px 0;
+    padding-left: 10px;
+    border-radius: 40px;
+    background-color: #f9fafb;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    max-height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+}
+
+.staff-user-page .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.staff-user-page .staff-users-table {
+    width: 100%;
+    min-width: 1000px;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.staff-user-page .staff-users-table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.staff-user-page .staff-users-table tbody tr:hover {
+    background-color: #f4f4f4;
+}
+
+.staff-user-page .staff-users-table th,
+.staff-user-page .staff-users-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.staff-user-page .staff-users-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 768px) {
+    .staff-user-page .staff-users-table {
+        font-size: 12px;
+        min-width: 768px;
+    }
+}
+
+.staff-user-page .badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: white;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.staff-user-page .badge-success {
+    background-color: #28a745;
+}
+
+.staff-user-page .badge-danger {
+    background-color: #dc3545;
+}
+
+
+/* Pagination */
+.staff-user-page .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.staff-user-page .pagination-controls button {
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.staff-user-page .pagination-btn {
+    margin: 5px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.staff-user-page .pagination-btn:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.staff-user-page .pagination-page {
+    margin: 0 10px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.staff-user-page .page-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0 10px;
+}

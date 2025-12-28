@@ -1,0 +1,73 @@
+
+
+/* Scoped CSS bằng cách sử dụng tiền tố .user-management */
+.user-management .container-fluid {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Tùy chỉnh thẻ card */
+.user-management .card {
+    border-radius: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.user-management .card:hover {
+    transform: translateY(-5px);
+}
+
+/* Tùy chỉnh bảng */
+.user-management .table th {
+    font-weight: 600;
+    background-color: #007bff !important;
+    color: white !important;
+    border-top: none !important;
+}
+
+.user-management .table td {
+    vertical-align: middle !important;
+    font-size: 0.95rem;
+}
+
+/* Hiệu ứng hover trên dòng */
+.user-management .hover-row:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Tùy chỉnh nút xóa */
+.user-management .btn-danger {
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+}
+
+.user-management .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Tùy chỉnh phân trang */
+.user-management .pagination .page-link {
+    border-radius: 50%;
+    margin: 0 5px;
+    color: #007bff;
+    border: 1px solid #007bff;
+    transition: all 0.3s ease;
+}
+
+.user-management .pagination .page-link:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.user-management .pagination .disabled .page-link {
+    color: #6c757d;
+    border-color: #dee2e6;
+    background-color: #fff;
+}
+
+/* Tùy chỉnh badge */
+.user-management .badge {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 12px;
+}

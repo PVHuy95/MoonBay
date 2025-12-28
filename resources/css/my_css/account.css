@@ -1,0 +1,787 @@
+/* Animation cho thông báo */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.update-message {
+  animation: fadeInOut 3s ease-in-out;
+}
+
+
+.card {
+  border: none !important;
+}
+
+/* Nền mờ tối */
+.container_account {
+  display: flex;
+  justify-content: center;
+  /* Căn giữa theo chiều ngang */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+  min-height: 80vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Khối nội dung */
+.container_account .card {
+  width: 80%;
+  /* Chiều rộng đầy đủ */
+  height: auto;
+  /* Chính xác dụng tố khóa */
+  z-index: 10;
+  /* Đảm bảo nội dung nằm trên nền mờ */
+}
+
+/* Ẩn cuộn trang khi hiển thị nền mờ */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Layout hai cột bên trong card */
+.account-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.account-left {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 250px;
+}
+
+.account-right {
+  flex: 1;
+  /* Cột bên phải chiếm phần còn lại */
+}
+
+.account-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.account-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.booking-item {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.edit-form .form-control {
+  margin-bottom: 10px;
+}
+
+.edit-form .btn {
+  margin-right: 10px;
+}
+
+/* Container chứa toàn bộ danh sách bookings */
+.bookings-container {
+  max-height: 205px;
+  /* Chiều cao cố định, thay đổi nếu cần */
+  overflow-y: auto;
+  /* Cuộn dọc khi nội dung vượt quá chiều cao */
+  overflow-x: hidden;
+  /* Ẩn cuộn ngang */
+  padding: 15px;
+  border-radius: 8px;
+  /* Bo góc nhẹ */
+}
+
+/* Tùy chỉnh thanh cuộn dọc */
+.bookings-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.bookings-container::-webkit-scrollbar-thumb {
+  background: #adb5bd;
+  /* Màu xám nhạt của Bootstrap */
+  border-radius: 4px;
+}
+
+.bookings-container::-webkit-scrollbar-thumb:hover {
+  background: #6c757d;
+  /* Màu xám đậm hơn khi hover */
+}
+
+/* Tùy chỉnh mỗi booking */
+.card-wrapper {
+  transition: transform 0.2s;
+  /* Hiệu ứng phóng to nhẹ khi hover */
+  border-radius: 20px;
+}
+
+/* Hiệu ứng hover cho card-wrapper */
+.card-wrapper:hover {
+  transform: translateY(-3px);
+  /* Nâng card lên khi hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  /* Bóng đậm hơn */
+}
+
+/* Tùy chỉnh tiêu đề */
+.card-title {
+  font-size: 1.5rem;
+  /* Kích thước chữ lớn hơn giống trong hình */
+  font-weight: 700;
+  /* Độ đậm */
+  color: #2c3e50;
+  /* Màu xanh đậm */
+  margin-bottom: 12px;
+  /* Khoảng cách dưới tiêu đề */
+  text-transform: capitalize;
+  /* Viết hoa chữ cái đầu */
+}
+
+/* Tùy chỉnh nội dung */
+.card-text {
+  font-size: 0.95rem;
+  /* Kích thước chữ nội dung */
+  color: #495057;
+  /* Màu xám đậm của Bootstrap */
+  line-height: 1.6;
+  /* Khoảng cách dòng */
+}
+
+/* Tùy chỉnh mỗi hàng thông tin */
+.info-row {
+  display: flex;
+  /* Sắp xếp các thông tin theo hàng ngang */
+  flex-wrap: wrap;
+  /* Nếu không đủ chỗ, xuống dòng */
+  gap: 15px;
+  /* Khoảng cách giữa các thông tin */
+  margin-bottom: 8px;
+  /* Khoảng cách giữa các hàng */
+}
+
+/* Tùy chỉnh mỗi cặp label-value */
+.info-item {
+  display: flex;
+  /* Đặt label và giá trị trên cùng một dòng */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+}
+
+/* Tùy chỉnh label */
+.info-item strong {
+  color: #212529;
+  /* Màu đen đậm của Bootstrap */
+  font-weight: 500;
+  margin-right: 5px;
+  /* Khoảng cách giữa label và giá trị */
+  min-width: 110px;
+  /* Chiều rộng tối thiểu để căn chỉnh đều */
+}
+
+/* Tùy chỉnh giá trị */
+.info-item span {
+  color: #6c757d;
+  /* Màu xám nhạt của Bootstrap (text-muted) */
+}
+
+/* Tùy chỉnh giá (Price) */
+.card-text:last-of-type {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.card-text:last-of-type strong {
+  min-width: auto;
+  /* Bỏ chiều rộng cố định cho Price */
+}
+
+/* Đảm bảo padding trong card-body */
+.card-body {
+  padding: 15px;
+  /* Padding của Bootstrap đã đủ đẹp */
+}
+
+#avatar-input {
+  margin-top: 10px;
+  padding: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .container_account .card {
+    width: 90%;
+    /* Tăng chiều rộng card trên tablet */
+  }
+
+  .account-left {
+    flex: 0 0 180px;
+    /* Giảm kích thước cột trái */
+  }
+
+  .account-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .account-name {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container_account {
+    padding: 15px;
+    min-height: auto;
+    /* Bỏ giới hạn chiều cao để tránh cuộn không cần thiết */
+  }
+
+  .container_account .card {
+    width: 100%;
+    /* Card chiếm toàn bộ chiều rộng */
+  }
+
+  .account-wrapper {
+    flex-direction: column;
+    /* Chuyển thành layout dọc */
+    align-items: center;
+    gap: 15px;
+  }
+
+  .account-left {
+    flex: none;
+    min-height: auto;
+    margin-bottom: 20px;
+  }
+
+  .account-right {
+    width: 100%;
+    text-align: center;
+  }
+
+  .account-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .account-name {
+    font-size: 1.2rem;
+  }
+
+  .user-info-card .card-body {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .user-details {
+    text-align: center;
+  }
+
+  .info-row {
+    justify-content: center;
+  }
+
+  .info {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .info strong {
+    min-width: auto;
+  }
+
+  .edit-form .form-control {
+    font-size: 0.9rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+
+  .bookings-container {
+    max-height: 300px;
+    /* Tăng chiều cao để hiển thị nhiều hơn trên mobile */
+    padding: 10px;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+  }
+
+  .info-item strong {
+    min-width: 90px;
+  }
+}
+
+@media (max-width: 430px) {
+
+  /* iPhone 14 Pro Max */
+  .container_account {
+    padding: 10px;
+  }
+
+  .container_account .card {
+    width: 100%;
+  }
+
+  .account-wrapper {
+    gap: 10px;
+  }
+
+  .account-left {
+    margin-bottom: 15px;
+  }
+
+  .account-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .account-name {
+    font-size: 1rem;
+  }
+
+  .user-info-card .card-title {
+    font-size: 1.1rem;
+  }
+
+  .info-row {
+    gap: 10px;
+  }
+
+  .info {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .info strong,
+  .info span {
+    font-size: 0.85rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+
+  .edit-form .form-control {
+    font-size: 0.85rem;
+  }
+
+  .bookings-container {
+    max-height: 250px;
+    padding: 8px;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+
+  .card-text {
+    font-size: 0.85rem;
+  }
+
+  .info-item strong {
+    min-width: auto;
+    font-size: 0.85rem;
+  }
+
+  .info-item span {
+    font-size: 0.85rem;
+  }
+}
+
+
+
+
+
+
+.user-info-card {
+  border-radius: 20px;
+  /* Bo góc */
+  background: #f8f9fa;
+  /* Màu nền nhẹ của Bootstrap */
+}
+
+/* Sắp xếp thông tin người dùng và nút Edit Profile */
+.user-info-card .card-body {
+  padding: 15px;
+  /* Padding của Bootstrap */
+}
+
+/* Tiêu đề User Information */
+.user-info-card .card-title {
+  font-size: 1.25rem;
+  /* Kích thước chữ tiêu đề */
+  font-weight: 600;
+  /* Độ đậm */
+  color: #2c3e50;
+  /* Màu xanh đậm */
+  margin-bottom: 10px;
+  /* Khoảng cách dưới tiêu đề */
+}
+
+/* Hàng thông tin (Email, Phone) */
+.info-row {
+  display: flex;
+  /* Sắp xếp thông tin theo hàng ngang */
+  flex-wrap: wrap;
+  /* Nếu không đủ chỗ, xuống dòng */
+  gap: 15px;
+  /* Khoảng cách giữa các thông tin */
+}
+
+/* Mỗi cặp label-value */
+.info {
+  display: flex;
+  /* Đặt label và giá trị trên cùng một dòng */
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+}
+
+/* Label trong thông tin người dùng */
+.info strong {
+  color: #212529;
+  /* Màu đen đậm của Bootstrap */
+  font-weight: 500;
+  margin-right: 5px;
+  /* Khoảng cách giữa label và giá trị */
+  min-width: 65px;
+  /* Chiều rộng tối thiểu để căn chỉnh đều */
+}
+
+/* Giá trị trong thông tin người dùng */
+.info span {
+  color: #6c757d;
+  /* Màu xám nhạt của Bootstrap (text-muted) */
+}
+
+/* Nút Edit Profile */
+.btn-primary {
+  background-color: #007bff;
+  /* Màu xanh của Bootstrap */
+  border: none;
+  padding: 6px 12px;
+  /* Kích thước nút nhỏ gọn */
+  font-size: 0.9rem;
+  /* Chữ nhỏ hơn */
+  text-transform: uppercase;
+  /* Chữ in hoa */
+  transition: background-color 0.3s;
+  /* Hiệu ứng chuyển màu */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  /* Màu xanh đậm hơn khi hover */
+}
+
+
+
+
+
+
+/* css của revieW & complaints */
+/* Reviews Section */
+.user-reviews {
+  margin-top: 20px;
+}
+
+.user-reviews h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #007bff;
+  text-align: center;
+}
+
+.reviews-complaints-container {
+  display: flex;
+  gap: 100px;
+  justify-content: center;
+}
+
+.reviews-column,
+.complaints-column {
+  flex: 1;
+  max-width: 600px;
+}
+
+.reviews-column h4,
+.complaints-column h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+.reviews-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* Reviews: 3 thẻ theo hàng ngang */
+  grid-template-rows: repeat(5, auto);
+  /* 5 thẻ theo hàng dọc */
+  gap: 15px;
+  max-height: 600px;
+  /* Giới hạn chiều cao để cuộn */
+  overflow-y: auto;
+  /* Cuộn dọc khi vượt quá 5 hàng */
+  padding-right: 10px;
+  /* Tạo khoảng trống cho thanh cuộn */
+}
+
+.complaints-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  /* Complaints: 2 thẻ theo hàng ngang */
+  grid-template-rows: repeat(5, auto);
+  /* 5 thẻ theo hàng dọc */
+  gap: 15px;
+  max-height: 600px;
+  /* Giới hạn chiều cao để cuộn */
+  overflow-y: auto;
+  /* Cuộn dọc khi vượt quá 5 hàng */
+  padding-right: 10px;
+  /* Tạo khoảng trống cho thanh cuộn */
+}
+
+/* Ẩn thanh cuộn trên Firefox */
+.reviews-list,
+.complaints-list {
+  scrollbar-width: thin;
+}
+
+.reviews-list::-webkit-scrollbar-track,
+.complaints-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.reviews-list::-webkit-scrollbar-thumb,
+.complaints-list::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.review-card,
+.complaint-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.review-header,
+.complaint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.review-date,
+.complaint-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.review-rating,
+.complaint-rating {
+  font-size: 1rem;
+  color: #ffc107;
+}
+
+.review-comment,
+.complaint-comment {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  margin-top: 5px;
+  overflow-y: auto;
+  margin-bottom: 0;
+  text-align: justify;
+}
+
+.review-room,
+.complaint-room {
+  font-size: 0.95rem;
+  margin: 5px 0;
+  color: #333;
+}
+
+.complaint-card {
+  border-left: 3px solid #dc3545;
+  /* Đường viền đỏ để phân biệt complaints */
+}
+
+.complaint-card,
+.review-card {
+  height: auto;
+  max-height: 200px;
+}
+
+.review-comment::-webkit-scrollbar,
+.complaint-comment::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .reviews-complaints-container {
+    flex-direction: column;
+  }
+
+  .reviews-column,
+  .complaints-column {
+    width: 100%;
+  }
+
+  .reviews-list {
+    grid-template-columns: repeat(2, 1fr);
+    /* Giảm xuống 2 thẻ hàng ngang trên màn hình nhỏ */
+    grid-template-rows: repeat(5, auto);
+    /* Giữ 5 hàng */
+    max-height: 500px;
+    /* Giảm chiều cao trên màn hình nhỏ */
+  }
+
+  .complaints-list {
+    grid-template-columns: repeat(2, 1fr);
+    /* Complaints: Giữ 2 thẻ hàng ngang */
+    grid-template-rows: repeat(5, auto);
+    /* Giữ 5 hàng */
+    max-height: 500px;
+    /* Giảm chiều cao trên màn hình nhỏ */
+  }
+
+  .complaints-list,
+  .reviews-list {
+    padding-right: 0;
+    /* Bỏ padding bên phải */
+  }
+
+  .user-reviews h3 {
+    font-size: 1.3rem;
+  }
+
+  .reviews-column h4,
+  .complaints-column h4 {
+    font-size: 1.1rem;
+  }
+
+  .review-card,
+  .complaint-card {
+    padding: 10px;
+  }
+
+  .review-header,
+  .complaint-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .review-date,
+  .complaint-date,
+  .review-rating,
+  .complaint-rating {
+    font-size: 0.85rem;
+  }
+
+  .review-room,
+  .complaint-room,
+  .review-comment,
+  .complaint-comment {
+    font-size: 0.9rem;
+  }
+}
+
+/* Đặc biệt cho iPhone 14 Pro Max (430px) */
+@media (max-width: 430px) {
+  .reviews-complaints-container {
+    flex-direction: column;
+  }
+
+  .complaints-list,
+  .reviews-list {
+    padding-right: 0;
+    /* Bỏ padding bên phải */
+  }
+
+  .reviews-list,
+  .complaints-list {
+    grid-template-columns: 1fr;
+    /* 1 thẻ hàng ngang trên màn hình rất nhỏ */
+    grid-template-rows: repeat(5, auto);
+    /* Giữ 5 hàng */
+    max-height: 400px;
+    /* Giảm chiều cao trên iPhone */
+  }
+
+  .user-reviews h3 {
+    font-size: 1.2rem;
+  }
+
+  .reviews-column h4,
+  .complaints-column h4 {
+    font-size: 1rem;
+  }
+
+  .review-card,
+  .complaint-card {
+    padding: 8px;
+  }
+
+  .review-date,
+  .complaint-date,
+  .review-rating,
+  .complaint-rating {
+    font-size: 0.8rem;
+  }
+
+  .review-room,
+  .complaint-room,
+  .review-comment,
+  .complaint-comment {
+    font-size: 0.85rem;
+  }
+}

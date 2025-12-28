@@ -1,0 +1,196 @@
+/* Popup Overlay */
+.popup-booknow .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup Content */
+.popup-booknow .popup-content {
+    background: #fff;
+    padding: 15px; /* Giảm padding trên màn hình nhỏ */
+    border-radius: 15px;
+    width: 90%; /* Sử dụng phần trăm để linh hoạt */
+    max-width: 500px; /* Giảm max-width để phù hợp với iPhone 14 Pro Max */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung dài */
+    max-height: 90vh; /* Giới hạn chiều cao tối đa */
+}
+
+/* Form Row */
+.popup-booknow .book-now-form .row {
+    margin-bottom: 15px;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Nút đóng popup */
+.popup-booknow .close-popup-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease;
+}
+
+.popup-booknow .close-popup-btn:hover {
+    color: #ff0000;
+}
+
+/* Placeholder đậm */
+.popup-booknow .bold-placeholder::placeholder {
+    font-weight: bold;
+    color: #000;
+}
+
+/* Text Warning */
+.popup-booknow .text-warning {
+    color: #ffc107;
+    white-space: pre-line;
+    max-height: 80px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 5px;
+    font-size: 0.9rem;
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.popup-booknow .text-warning::-webkit-scrollbar {
+    width: 5px;
+}
+
+.popup-booknow .text-warning::-webkit-scrollbar-thumb {
+    background-color: #ffc107;
+    border-radius: 5px;
+}
+
+/* Payment Option */
+.popup-booknow .book-now-form .payment-option {
+    margin-top: 10px;
+}
+
+.popup-booknow .book-now-form .payment-option .row {
+    margin: 0;
+}
+
+.popup-booknow .book-now-form .payment-option label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #333;
+    margin: 0 10px;
+}
+
+.popup-booknow .book-now-form .payment-option input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #007bff;
+}
+
+.text-warning::-webkit-scrollbar {
+  display: none;
+}
+
+/* View Price Section */
+.popup-booknow .view-price-popup.info-row {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.popup-booknow .view-price-popup .info-item {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.popup-booknow .view-price-popup .row {
+    margin: 0; 
+    width: 100%;
+}
+
+.popup-booknow .view-price-popup .col-md-6 {
+    padding: 0 10px; /* Thêm padding để tạo khoảng cách giữa các cột */
+}
+
+.popup-booknow .view-price-popup .view-price {
+    margin-top: 10px;
+    padding: 10px;
+    border-left: 3px solid #007bff;
+}
+
+.popup-booknow .view-price-popup .view-price p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Làm nổi bật Amount to Pay Now */
+.popup-booknow .view-price-popup .view-price p:last-child {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 1.1rem;
+}
+
+/* Responsive Design cho view-price-popup */
+@media (min-width: 1260px) and (max-width: 1400px) {
+    .rooms_booking {
+        height: 87vh;
+    }
+    
+}
+
+@media (min-width: 769px) and (max-width: 1259px) {
+    .rooms_booking {
+        height: auto;
+    }
+    
+}
+
+@media (max-width: 768px) {
+    .rooms_booking {
+        height: auto;
+    }
+
+    .popup-booknow .popup-content {
+        padding: 10px; /* Giảm padding thêm trên màn hình nhỏ */
+        max-width: 100%; /* Đảm bảo không tràn viền */
+        width: 95%; /* Tăng chiều rộng tương đối */
+        max-height: 80%;
+    }
+
+    .popup-booknow .view-price-popup .row {
+        flex-direction: column; /* Chuyển thành dọc trên màn hình nhỏ */
+    }
+
+    .popup-booknow .view-price-popup .col-md-6 {
+        width: 100%; /* Chiếm toàn bộ chiều rộng */
+        padding: 0; /* Bỏ padding để căn chỉnh sát lề */
+        margin-bottom: 10px; /* Thêm khoảng cách giữa các phần */
+    }
+
+    .popup-booknow .view-price-popup .view-price {
+        margin-top: 0;
+        padding: 5px;
+        border-left: none; /* Bỏ đường viền trái trên màn hình nhỏ */
+        border-top: 2px solid #007bff; /* Thêm đường viền trên để phân cách */
+    }
+}

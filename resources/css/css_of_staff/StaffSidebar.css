@@ -1,0 +1,183 @@
+/* Wrapper */
+.staff-sidebar-page .sidebar-wrapper-staff {
+  width: 240px;
+  background-color: #343a40;
+  color: #ffffff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s;
+  overflow: hidden;
+  min-height: 100vh;
+  position: fixed;
+  top: 70px; /* Chiều cao của header */
+  left: 0;
+  bottom: 0;
+  z-index: 900;
+  /* Ẩn thanh cuộn dọc */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Ẩn thanh cuộn cho WebKit browsers (Chrome, Safari, Edge) */
+.staff-sidebar-page .sidebar-wrapper-staff::-webkit-scrollbar {
+  display: none;
+}
+
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff {
+  width: 90px;
+}
+
+/* Header */
+.staff-sidebar-page .sidebar-header-staff {
+  background-color: #212529;
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Center header elements when sidebar is collapsed */
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .sidebar-header-staff {
+  padding: 15px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .d-flex.align-items-center {
+  justify-content: center;
+}
+
+/* Fix toggle button position in collapsed state */
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .toggle-icon {
+  display: flex;
+  margin-left: auto;
+  position: relative;
+  right: auto;
+  top: auto;
+}
+
+/* Logo */
+.staff-sidebar-page .logo-icon-staff {
+  width: 40px;
+  height: 40px;
+}
+
+.staff-sidebar-page .logo-text-staff {
+  transition: opacity 0.3s;
+}
+
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .logo-text-staff {
+  display: none;
+}
+
+/* Navigation */
+.staff-sidebar-page .nav-link {
+  padding: 10px 15px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 0;
+}
+
+/* Maintain consistent icon appearance when sidebar is collapsed */
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .nav-link {
+  text-align: center;
+  padding: 10px 15px;
+  justify-content: center;
+  width: 100%;
+}
+
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .nav-item {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Add nav-item full width */
+.staff-sidebar-page .nav-item {
+  width: 100%;
+}
+
+.staff-sidebar-page .nav-link:hover {
+  background-color: #495057;
+  text-decoration: none;
+  border-radius: 0;
+  width: 100%;
+}
+
+/* Maintain consistent hover in collapsed mode */
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .nav-link:hover {
+  background-color: #495057;
+  border-radius: 0;
+  width: 100%;
+}
+
+.staff-sidebar-page .nav-link.active {
+  background-color: #495057;
+  font-weight: bold;
+  border-radius: 0;
+  width: 100%;
+}
+
+.staff-sidebar-page .nav-link i {
+  font-size: 1.2rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Maintain icon styling in collapsed mode but remove right margin */
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .nav-link i {
+  margin-right: 0 !important;
+}
+
+/* Toggle button styling */
+.staff-sidebar-page .toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+}
+
+.staff-sidebar-page .toggle-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.staff-sidebar-page .toggle-icon i {
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+/* Remove the position absolute in collapsed state */
+.staff-sidebar-page .sidebar-wrapper-staff.sidebar-closed-staff .toggle-icon {
+  margin-left: auto;
+}
+
+/* Make the navigation list take up full width */
+.staff-sidebar-page .sidebar-wrapper-staff ul.nav {
+  width: 100%;
+}
+
+/* Footer */
+.staff-sidebar-page .sidebar-footer-staff {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #212529;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #adb5bd;
+}

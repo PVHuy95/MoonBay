@@ -1,0 +1,74 @@
+/* Nền mờ */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ tối */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Nội dung popup */
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px; /* Bo góc mềm mại */
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7); /* Bóng mờ */
+    position: relative;
+}
+
+/* Nút đóng popup */
+.close-popup-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Các trường nhập liệu */
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form p {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+form p a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}

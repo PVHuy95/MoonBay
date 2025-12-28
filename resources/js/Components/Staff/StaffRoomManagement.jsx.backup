@@ -1,0 +1,477 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../../../css/css_of_staff/StaffRoomManagement.css"; // Import CSS styles
+import { Modal, Button, Toast, ToastContainer } from "react-bootstrap";
+import { Modal, Button, Toast } from "react-bootstrap";
+
+function StaffRoomManagement() {
+    const [rooms, setRooms] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [form, setForm] = useState({
+        room_number: "",
+        type: "",
+        description: "",
+        price: "",
+        status: "",
+    });
+    const [editingId, setEditingId] = useState(null);
+    const [statusFilter, setStatusFilter] = useState("all"); // Thêm state cho filter
+    const [searchQuery, setSearchQuery] = useState(""); // Thêm state cho search
+
+    // Thêm state cho phân trang
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 4; // Số phòng mỗi trang
+
+    useEffect(() => {
+        fetchRooms();
+    }, []);
+
+    const fetchRooms = async () => {
+        setLoading(true);
+        setError("");
+        try {
+            // Thêm một chút độ trễ để hiển thị loading spinner
+            await new Promise(resolve => setTimeout(resolve, 600));
+            
+            const res = await axios.get("http://localhost:8000/api/rooms");
+            setRooms(res.data);
+        } catch (error) {
+            setError("Failed to load room list. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await axios.put(
+                `http://localhost:8000/api/rooms/${editingId}`,
+                form
+            );
+            setEditingId(null);
+            setForm({
+                room_number: "",
+                type: "",
+                description: "",
+                price: "",
+                status: "",
+            });
+            fetchRooms();
+        } catch (error) {
+            setError("Failed to update room. Please check your inputs and try again.");
+            setLoading(false);
+        }
+    };
+
+    const handleEdit = (room) => {
+        setForm(room);
+        setEditingId(room.id);
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm("Are you sure you want to delete this room?")) {
+            setLoading(true);
+            try {
+                await axios.delete(`http://localhost:8000/api/rooms/${id}`);
+                fetchRooms();
+            } catch (error) {
+                setError("Unable to delete room. Please try again.");
+                setLoading(false);
+            }
+        }
+    };
+
+    // Tính toán dữ liệu phân trang
+    const totalPages = Math.ceil(rooms.length / itemsPerPage);
+    const paginatedRooms = rooms.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    // Xử lý thay đổi cho bộ lọc trạng thái
+    const handleStatusFilterChange = (e) => {
+        setStatusFilter(e.target.value);
+        setCurrentPage(1); // Đặt lại trang hiện tại về 1 khi thay đổi bộ lọc
+    };
+
+    // Xử lý thay đổi cho ô tìm kiếm
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+        setCurrentPage(1); // Đặt lại trang hiện tại về 1 khi thay đổi tìm kiếm
+    };
+
+    // Lọc và tìm kiếm dữ liệu phòng
+    const filteredRooms = rooms.filter((room) => {
+        const matchesStatus =
+            statusFilter === "all" || room.status === statusFilter;
+        const matchesSearch =
+            room.room_number
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase()) ||
+            room.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            room.price.toString().includes(searchQuery);
+        return matchesStatus && matchesSearch;
+    });
+
+    // Cập nhật lại tổng số trang khi có thay đổi về lọc hoặc tìm kiếm
+    const totalFilteredPages = Math.ceil(filteredRooms.length / itemsPerPage);
+
+    return (
+        <div className="staff-room-management">
+            <h2 className="staff-room-title">Room Management</h2>
+            <p className="staff-room-description">
+                Manage room information, including room status.
+            </p>
+            <div className="staff-room-actions">
+              <div className="staff-room-filter-container">
+                <select
+                  value={statusFilter}
+                  onChange={handleStatusFilterChange}
+                  className="staff-room-status-filter"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="available">Available</option>
+                  <option value="occupied">Occupied</option>
+                  <option value="maintenance">Maintenance</option>
+                </select>
+              </div>
+              <div className="staff-room-search-container">
+                <input
+                  type="text"
+                  placeholder="Search by room number, type, status..."
+                  className="staff-room-search-input"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
+            <div className="staff-room-table-container">
+                {loading && !editingId ? (
+                    <div className="text-center py-5">
+                        <div className="spinner-border text-primary mb-2" />
+                        <p>Loading room data...</p>
+                    </div>
+                ) : error && !editingId ? (
+                    <div className="staff-room-error">
+                        {error}
+                    </div>
+                ) : (
+                    <>
+                        {editingId && (
+                            <form
+                                onSubmit={handleSubmit}
+                                className="staff-room-edit-form"
+                            >
+                                <div className="staff-room-form-row">
+                                    <input
+                                        name="room_number"
+                                        placeholder="Room Number"
+                                        value={form.room_number}
+                                        onChange={handleChange}
+                                        required
+                                        disabled
+                                    />
+                                    <input
+                                        name="type"
+                                        placeholder="Room Type"
+                                        value={form.type}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <input
+                                        name="description"
+                                        placeholder="Description"
+                                        value={form.description}
+                                        onChange={handleChange}
+                                    />
+                                    <input
+                                        name="price"
+                                        placeholder="Price"
+                                        value={form.price}
+                                        onChange={handleChange}
+                                        required
+                                        type="number"
+                                    />
+                                    <select
+                                        name="status"
+                                        value={form.status}
+                                        onChange={handleChange}
+                                        required
+                                        className="staff-room-status-select"
+                                    >
+                                        <option value="">Select Status</option>
+                                        <option value="available">Available</option>
+                                        <option value="occupied">Occupied</option>
+                                        <option value="maintenance">Maintenance</option>
+                                    </select>
+                                </div>
+                                <div className="staff-room-form-actions">
+                                    <button type="submit" className="btn update">
+                                        Update
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn cancel"
+                                        onClick={() => {
+                                            setEditingId(null);
+                                            setForm({
+                                                room_number: "",
+                                                type: "",
+                                                description: "",
+                                                price: "",
+                                                status: "",
+                                            });
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                        <table className="staff-room-data-table">
+                            <thead>
+                                <tr>
+                                    <th>Room Number</th>
+                                    <th>Room Type</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredRooms
+                                    .slice(
+                                        (currentPage - 1) * itemsPerPage,
+                                        currentPage * itemsPerPage
+                                    )
+                                    .map((room) => (
+                                    <tr key={room.id}>
+                                        <td>{room.room_number}</td>
+                                        <td>{room.type}</td>
+                                        <td>{room.description}</td>
+                                        <td>{room.price}</td>
+                                        <td>
+                                            <span
+                                                className={`staff-room-badge staff-room-badge-${room.status.toLowerCase()}`}
+                                            >
+                                                {room.status}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button
+                                                className="btn btn-history staff-room-btn-history"
+                                                onClick={() => handleEdit(room)}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                className="btn btn-note staff-room-btn-note"
+                                                onClick={() => handleDelete(room.id)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        {/* Phân trang */}
+                        {totalFilteredPages > 1 && (
+                            <div className="staff-room-pagination">
+                                <button
+                                    className="staff-room-page-btn"
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
+                                >
+                                    &#60;
+                                </button>
+                                {[...Array(totalFilteredPages)].map((_, idx) => (
+                                    <button
+                                        key={idx + 1}
+                                        className={`staff-room-page-btn ${
+                                            currentPage === idx + 1 ? "active" : ""
+                                        }`}
+                                        onClick={() => handlePageChange(idx + 1)}
+                                    >
+                                        {idx + 1}
+                                    </button>
+                                ))}
+                                <button
+                                    className="staff-room-page-btn"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalFilteredPages}
+                                >
+                                    &#62;
+                                </button>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+        </div>
+    );
+}
+
+export default StaffRoomManagement;
+                                <div className="staff-room-form-row">
+                                    <input
+                                        name="room_number"
+                                        placeholder="Room Number"
+                                        value={form.room_number}
+                                        onChange={handleChange}
+                                        required
+                                        disabled
+                                    />
+                                    <input
+                                        name="type"
+                                        placeholder="Room Type"
+                                        value={form.type}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    <input
+                                        name="description"
+                                        placeholder="Description"
+                                        value={form.description}
+                                        onChange={handleChange}
+                                    />
+                                    <input
+                                        name="price"
+                                        placeholder="Price"
+                                        value={form.price}
+                                        onChange={handleChange}
+                                        required
+                                        type="number"
+                                    />
+                                    <select
+                                        name="status"
+                                        value={form.status}
+                                        onChange={handleChange}
+                                        required
+                                        className="staff-room-status-select"
+                                    >
+                                        <option value="">Select Status</option>
+                                        <option value="available">Available</option>
+                                        <option value="occupied">Occupied</option>
+                                        <option value="maintenance">Maintenance</option>
+                                    </select>
+                                </div>
+                                <div className="staff-room-form-actions">
+                                    <button type="submit" className="btn update">
+                                        Update
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn cancel"
+                                        onClick={() => {
+                                            setEditingId(null);
+                                            setForm({
+                                                room_number: "",
+                                                type: "",
+                                                description: "",
+                                                price: "",
+                                                status: "",
+                                            });
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                <table className="staff-room-data-table">
+                    <thead>
+                        <tr>
+                            <th>Room Number</th>
+                            <th>Room Type</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredRooms
+                            .slice(
+                                (currentPage - 1) * itemsPerPage,
+                                currentPage * itemsPerPage
+                            )
+                            .map((room) => (
+                            <tr key={room.id}>
+                                <td>{room.room_number}</td>
+                                <td>{room.type}</td>
+                                <td>{room.description}</td>
+                                <td>{room.price}</td>
+                                <td>
+                                    <span
+                                        className={`staff-room-badge staff-room-badge-${room.status.toLowerCase()}`}
+                                    >
+                                        {room.status}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button
+                                        className="btn btn-history staff-room-btn-history"
+                                        onClick={() => handleEdit(room)}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        className="btn btn-note staff-room-btn-note"
+                                        onClick={() => handleDelete(room.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                {/* Phân trang */}
+                {totalFilteredPages > 1 && (
+                    <div className="staff-room-pagination">
+                        <button
+                            className="staff-room-page-btn"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            &#60;
+                        </button>
+                        {[...Array(totalFilteredPages)].map((_, idx) => (
+                            <button
+                                key={idx + 1}
+                                className={`staff-room-page-btn ${
+                                    currentPage === idx + 1 ? "active" : ""
+                                }`}
+                                onClick={() => handlePageChange(idx + 1)}
+                            >
+                                {idx + 1}
+                            </button>
+                        ))}
+                        <button
+                            className="staff-room-page-btn"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalFilteredPages}
+                        >
+                            &#62;
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+export default StaffRoomManagement;

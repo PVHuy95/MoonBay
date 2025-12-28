@@ -1,0 +1,563 @@
+/* Đổi tên file thành ContactAdminManagement.css nếu cần */
+
+.contact-admin-container {
+  max-width: 1100px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 10px 36px 10px 36px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.contact-admin-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #2d3a4a;
+  letter-spacing: 1px;
+}
+
+.contact-admin-description {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0;
+}
+
+/* Thay đổi search-filter-row thành search-container giống StaffCustomerManagement */
+/* Sửa lại phần search-filter-row để các phần tử nằm trên cùng một hàng */
+.contact-admin-search-filter-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 16px;
+  justify-content: flex-end;
+  gap: 16px;
+  min-height: 50px;
+  padding: 8px 0;
+}
+
+/* Điều chỉnh container tìm kiếm */
+.contact-admin-search-container {
+  margin-bottom: 0; /* Bỏ margin bottom để không tạo khoảng cách dư */
+  display: flex;
+  align-items: center;
+}
+
+.contact-admin-search-container input[type="text"] {
+  padding: 8px 16px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 320px;
+  height: 42px;
+  transition: border 0.2s;
+}
+
+/* Điều chỉnh container filter */
+.contact-admin-filter-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Thêm khoảng cách giữa search và filter */
+}
+
+.contact-admin-filter-container select {
+  padding: 10px 35px 10px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  transition: all 0.3s ease;
+  min-width: 160px;
+  height: 42px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.contact-admin-filter-container select:hover {
+  border-color: #cbd5e1;
+  background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.contact-admin-filter-container select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contact-admin-search-filter-row {
+    flex-direction: row; /* Giữ nguyên row để các phần tử nằm trên cùng một hàng */
+    flex-wrap: wrap; /* Cho phép xuống dòng khi không đủ không gian */
+    justify-content: flex-end;
+    gap: 12px;
+    min-height: auto;
+  }
+  
+  .search-input-wrapper {
+    width: 250px;
+  }
+  
+  .contact-admin-filter-container select {
+    min-width: 140px; /* Giảm kích thước trên màn hình nhỏ */
+  }
+}
+
+@media (max-width: 576px) {
+  .contact-admin-search-filter-row {
+    justify-content: center; /* Căn giữa trên màn hình rất nhỏ */
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .search-input-wrapper {
+    width: 100%; /* Sử dụng toàn bộ chiều rộng */
+  }
+  
+  .contact-admin-filter-container select {
+    width: 100%; /* Sử dụng toàn bộ chiều rộng */
+    min-width: auto;
+  }
+}
+.contact-admin-search-container input[type="text"]:focus {
+  border: 1.5px solid #0077ff;
+  outline: none;
+}
+
+/* Giữ nguyên filter container nhưng di chuyển vào search container */
+/* Các styles này đã được thay thế bằng styles mới ở trên */
+
+.contact-admin-table-container {
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.contact-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #f8fafc;
+}
+
+.contact-admin-table th, .contact-admin-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 1rem;
+}
+
+.contact-admin-table th {
+  background: #e9f1fa;
+  color: #2d3a4a;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.contact-admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Cập nhật style cho badges giống StaffCustomerManagement */
+.contact-admin-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.contact-admin-badge-new {
+  background: linear-gradient(90deg, #1976d2 60%, #43a047 100%);
+  color: #fff;
+  box-shadow: 0 1px 4px #1976d233;
+}
+
+.contact-admin-badge-read {
+  background: linear-gradient(90deg, #43cea2 60%, #185a9d 100%);
+  color: #fff;
+  box-shadow: 0 1px 4px #43cea233;
+}
+
+.contact-admin-badge-responded {
+  background: linear-gradient(90deg, #43cea2 60%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 1px 4px #43cea233;
+}
+
+.contact-admin-badge-archived {
+  background: #6c757d;
+  color: #fff;
+}
+
+.contact-admin-badge-pending {
+  background: linear-gradient(90deg, #f7b42c 60%, #fc575e 100%);
+  color: #fff;
+  box-shadow: 0 1px 4px #f7b42c33;
+}
+
+.contact-admin-badge-spam {
+  background: #bf5f5f;
+  color: #fff !important;
+}
+
+/* Cập nhật style cho buttons */
+/* Đảm bảo các nút nằm trên cùng một hàng */
+.contact-admin-action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* Style cho nút View */
+.contact-admin-view-btn {
+  background: #e0e7ff;
+  color: #3730a3;
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px; /* Điều chỉnh padding dọc */
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.18s, color 0.18s;
+  cursor: pointer;
+  outline: none;
+  height: 36px; /* Đảm bảo chiều cao cố định */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+}
+
+/* Style cho select box */
+.contact-admin-status-select {
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0 10px; /* Điều chỉnh padding dọc */
+  font-size: 0.9rem;
+  background: #f8fafc;
+  color: #222;
+  transition: border 0.18s;
+  height: 36px; /* Đảm bảo chiều cao cố định giống với nút View */
+  min-width: 100px;
+  max-width: 120px;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+  appearance: auto; /* Đảm bảo hiển thị mũi tên dropdown */
+}
+
+.contact-admin-status-select:focus {
+  border: 1.5px solid #0077ff;
+  outline: none;
+}
+
+/* Đảm bảo cột action đủ rộng */
+.contact-admin-table td:last-child {
+  min-width: 190px;
+}   
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contact-admin-action {
+    gap: 4px;
+  }
+  
+  .contact-admin-view-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    min-width: 60px;
+  }
+  
+  .contact-admin-status-select {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    min-width: 90px;
+    
+  }
+}
+.contact-admin-view-btn:hover {
+  background: #c7d2fe;
+}
+
+/* Cập nhật pagination giống StaffCustomerManagement */
+.contact-admin-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 22px 0 0 0;
+  gap: 6px;
+}
+
+.contact-admin-page-btn {
+  background: #f3f4f6;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 1rem;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 1px 4px #1976d233;
+  font-weight: 500;
+}
+
+.contact-admin-page-btn.active, 
+.contact-admin-page-btn:hover:not(:disabled) {
+  background: #0077ff;
+  color: #fff;
+}
+
+.contact-admin-page-btn:disabled {
+  background: #e5e7eb;
+  color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+/* Cập nhật modal styles giống StaffCustomerManagement */
+.contact-admin-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(44, 62, 80, 0.35); /* Tăng độ mờ của overlay */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px); /* Thêm hiệu ứng blur */
+  transition: all 0.3s ease;
+}
+
+.contact-admin-modal {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25); /* Tăng shadow */
+  padding: 32px;
+  width: 520px; /* Cố định width */
+  max-width: 95vw;
+  max-height: 85vh;
+  position: relative;
+  overflow: auto; /* Cho phép scroll nếu nội dung dài */
+  animation: contact-admin-modalIn 0.3s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes contact-admin-modalIn {
+  0% { transform: translateY(30px) scale(0.95); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+.contact-admin-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #4b5563;
+}
+
+.contact-admin-modal-close:hover {
+  background: #e5e7eb;
+  color: #111827;
+  transform: rotate(90deg);
+}
+
+.contact-admin-modal h3 {
+  margin: 0 0 24px 0;
+  font-size: 1.5rem;
+  color: #111827;
+  font-weight: 700;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.contact-admin-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-admin-modal-content > div {
+  line-height: 1.5;
+}
+
+.contact-admin-modal-content strong {
+  color: #4b5563;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 80px;
+}
+
+.contact-admin-modal-message {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+  border-left: 4px solid #0077ff;
+  line-height: 1.6;
+  color: #374151;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap; /* Giữ nguyên định dạng xuống dòng */
+}
+
+/* Giữ nguyên các media queries nhưng cập nhật cho modal */
+@media (max-width: 900px) {
+  .contact-admin-container {
+    padding: 18px 6px 24px 6px;
+  }
+  .contact-admin-modal {
+    width: auto;
+    min-width: 85vw;
+    padding: 24px 20px;
+  }
+  .contact-admin-modal h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-admin-container {
+    padding: 6px 2px 12px 2px;
+  }
+  .contact-admin-modal {
+    min-width: 95vw;
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+  .contact-admin-modal h3 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+  .contact-admin-modal-content {
+    gap: 10px;
+  }
+  .contact-admin-modal-message {
+    padding: 12px;
+    max-height: 250px;
+  }
+  .contact-admin-table th, .contact-admin-table td {
+    padding: 7px 4px;
+    font-size: 0.95rem;
+  }
+}
+
+.contact-admin-search-container input[type="text"],
+.contact-admin-filter-container select {
+  margin-bottom: 0 !important;
+}
+
+.contact-admin-view-btn, .contact-admin-status-select {
+  margin-bottom: 0!important;
+}
+
+.contact-admin-loading {
+  text-align: center;
+  color: #1976d2;
+  font-size: 1.1em;
+  padding: 32px 0;
+}
+
+.contact-admin-error {
+  text-align: center;
+  color: #e53935;
+  padding: 30px 0;
+  font-size: 1.05em;
+  background: #ffebee;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+/* Search Input Wrapper and Components */
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 320px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 40px 10px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 42px;
+    box-sizing: border-box;
+}
+
+.search-input:hover {
+    border-color: #cbd5e1;
+    background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.search-spinner {
+    position: absolute;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.clear-search-btn:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.search-results-info {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #0369a1;
+    text-align: center;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

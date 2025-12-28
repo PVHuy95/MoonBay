@@ -1,0 +1,42 @@
+.breadcrumb-modern {
+    padding: 12px 20px;
+    /* background-color: #1e1e1e; */
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 15px;
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  .breadcrumb-modern ol {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .breadcrumb-modern li {
+    display: flex;
+    align-items: center;
+    color: #ccc;
+  }
+  
+  .breadcrumb-modern a {
+    color: #268ef6;
+    text-decoration: none;
+  }
+  
+  .breadcrumb-modern a:hover {
+    text-decoration: underline;
+  }
+  
+  .breadcrumb-modern [aria-current="page"] {
+    font-weight: bold;
+    color: black;
+  }
+  
+  .breadcrumb-separator {
+    margin: 0 8px;
+    color: #aaa;
+  }
+  

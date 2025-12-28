@@ -1,0 +1,224 @@
+/* Reset mặc định */
+.Staff_IndexPage .booking-show {
+    max-width: 100%;
+}
+
+.Staff_BookingRooms-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.Staff_BookingRooms-container .form-group {
+    align-items: center;
+}
+
+/* Căn chỉnh form */
+.Staff_BookingRooms-container .form-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    /* Khoảng cách giữa các ô */
+    max-width: 100%;
+}
+
+/* Định dạng các nhóm input */
+.Staff_BookingRooms-container .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Định dạng input và select */
+.Staff_BookingRooms-container .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.Staff_BookingRooms-container .form-group .form-control,
+.Staff_BookingRooms-container .form-group .form-select {
+    width: 260px;
+    /* Chiều rộng cố định cho tất cả ô */
+    height: 40px;
+    /* Chiều cao cố định */
+    padding: 8px 12px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    /* Hiệu ứng animation */
+    box-sizing: border-box;
+}
+
+/* Hiệu ứng hover */
+.Staff_BookingRooms-container .form-group .form-control:hover,
+.Staff_BookingRooms-container .form-group .form-select:hover {
+    border-color: #007bff;
+    background-color: #f1f1f1;
+}
+
+/* Hiệu ứng focus */
+.Staff_BookingRooms-container .form-group .form-control:focus,
+.Staff_BookingRooms-container .form-group .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+    background-color: #fff;
+}
+
+/* Định dạng input-group (cho Total Price) */
+.Staff_BookingRooms-container .input-group {
+    width: 200px;
+}
+
+.Staff_BookingRooms-container .input-group .form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+
+.Staff_BookingRooms-container .input-group-text {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-left: none;
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
+/* Định dạng lỗi */
+.Staff_BookingRooms-container .invalid-feedback {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Định dạng nút submit */
+.Staff_BookingRooms-container .submit-btn {
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.Staff_BookingRooms-container .submit-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+    /* Hiệu ứng zoom khi hover */
+}
+
+.Staff_BookingRooms-container .submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Định dạng thông báo */
+.Staff_BookingRooms-container .alert {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.Staff_BookingRooms-container .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.Staff_BookingRooms-container .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+
+
+
+/* ---------------------------------------------------------------------------------------------- */
+
+.Staff_IndexPage .table-container {
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.Staff_IndexPage .table-container h3 {
+    font-size: 20px;
+    color: #1e90ff;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.Staff_IndexPage .table th,
+.Staff_IndexPage .table td {
+    padding: 12px;
+    text-align: center;
+    /* Căn giữa toàn bộ văn bản trong bảng */
+    border-bottom: 1px solid #ddd;
+}
+
+.Staff_IndexPage .table th {
+    font-weight: 600;
+}
+
+
+
+/* ---------------------------------------------------------------------------------------------- */
+.bookingStaff-table-container {
+    max-height: 700px;
+    overflow-y: auto;
+    height: 500px;
+}
+
+.bookingStaff-table-container::-webkit-scrollbar {
+    display: none;
+}
+
+.bookingStaff-table-container thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+    position: sticky;
+}
+
+
+
+
+/* ---------------------------------------------------------------------------------------------- */
+.room-type-block {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.standard-room {
+    background-color: #007bff;
+    color: white;
+}
+
+.deluxe-room {
+    background-color: #6610f2;
+    color: white;
+}
+
+.superior-room {
+    background-color: #6f42c1;
+    color: white;
+}
+
+.family-room {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.suite-room {
+    background-color: #dc3545;
+    color: white;
+}

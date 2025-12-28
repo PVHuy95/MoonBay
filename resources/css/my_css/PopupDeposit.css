@@ -1,0 +1,97 @@
+/* PopupDeposit.css */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-deposit {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 70%;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #333;
+}
+
+.popup-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.policy-section {
+    margin-bottom: 20px;
+}
+
+.policy-section h5 {
+    font-size: 1.1rem;
+    color: #34495e;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 5px;
+}
+
+.policy-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.policy-section li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.policy-section li strong {
+    color: #2c3e50;
+}
+
+.form-check-input:checked {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.form-check-label {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-primary:disabled {
+    background-color: #95a5a6;
+    border-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: #7f8c8d;
+    border-color: #7f8c8d;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

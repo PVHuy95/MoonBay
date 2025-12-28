@@ -1,0 +1,55 @@
+/* Sticky header */
+.booking-show .table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 1;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Row highlight */
+.booking-show .table tr:hover td,
+.booking-show .table tr:hover th {
+  background-color: #e9ecef !important;
+  transition: background-color 0.2s;
+}
+
+/* Specific cell highlight */
+.booking-show .table td:hover {
+  background-color: #f8f9fa !important;
+  transition: background-color 0.2s;
+}
+
+/* Column highlight */
+.booking-show .highlight-column {
+  background-color: #e9ecef !important;
+  transition: background-color 0.2s;
+}
+
+/* Ensure room column doesn't trigger column highlight */
+.booking-show .table td[data-column="0"]:hover,
+.booking-show .table th[data-column="0"]:hover {
+  background-color: #f8f9fa !important;
+}
+
+/* Table container for vertical scrolling */
+.booking-show .table-container {
+  max-height: 600px;
+  overflow-y: auto;
+  display: block;
+}
+/* ManageBooking.css */
+.booking-show .highlight-search {
+  border: 2px solid #fc1d4c !important; /* Blue border for highlighted cells */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) ; /* Optional: subtle glow effect */
+}
+
+/* Highlight the current date */
+.booking-show .highlight-today {
+ border: 1.5px solid #2a91ff ; /* Blue border for current date */
+}
+
+/* Dim past dates */
+.booking-show .past-date {
+  opacity: 0.3; /* Reduce opacity for past dates */
+}

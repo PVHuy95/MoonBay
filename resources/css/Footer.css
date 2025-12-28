@@ -1,0 +1,101 @@
+.footer-setup {
+  padding: 20px;
+}
+
+.nav-link {
+  color: #6c6c6e;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #e09d38;
+}
+
+.Link-setup li {
+  list-style-type: none;
+}
+
+.group2_Hung img {
+  width: 50%;
+  border-radius: 50%;
+}
+
+.button_send-hung {
+  border: 1px solid #6c6c6e;
+  color: #6c6c6e;
+}
+
+.button_send-hung:hover {
+  background-color: #e09d38d5;
+  color: white;
+}
+
+.Our_information_Hung a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.Our_information_Hung a:hover {
+  color: #e09d38;
+}
+
+.arrow {
+  font-size: 20px;
+  font-weight: bold;
+  animation: blink 1s infinite;
+  color: rgb(255, 255, 255);
+  /* Màu đỏ nổi bật */
+}
+
+.slow {
+  animation-delay: 1s;
+}
+
+.fast {
+  animation-delay: 1.5s;
+  /* Lệch pha để hiệu ứng hấp dẫn hơn */
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.2;
+    transform: scale(1.2);
+  }
+}
+
+.Contact_Hung {
+  position: absolute;
+  right: 1px;
+  padding: 0 2% 0 0;
+}
+
+.Contact_Hung img {
+  width: 6vh;
+  height: 6vh;
+  border-radius: 50%;
+  border: #ffffff solid 1px;
+  padding: 0.2vw;
+}
+.Contact_Hung img:hover {
+  border: #e09d38 solid 2px;
+  cursor: pointer;
+}
+.booking_footer_Hung{
+  color: black;
+  font-size: 2.7vw;
+  border-radius: 2px;
+}
+.moonbay_footer_Hung{
+  padding-bottom: 2%;
+  color: white;
+  font-size: 2vw;
+}

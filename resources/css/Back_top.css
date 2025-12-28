@@ -1,0 +1,49 @@
+.back_top_Hung {
+  position: fixed; 
+  bottom: 20px;
+  right: 30px;
+  z-index: 1000; 
+}
+.back_top_btn_Hung{
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  border: none;
+}
+.Arrow_Hung path{
+  fill: #02c2f7;
+}
+.Text_Hung{
+  font-size: 0.8em;
+  width: 100px;
+  position: absolute;
+  color: #02dff7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: -18px;
+  opacity: 0;
+  transition-duration: .7s;
+}
+.back_top_btn_Hung:hover .Text_Hung{
+  opacity: 1;
+  transition-duration: .7s;
+}
+.back_top_btn_Hung:hover .Arrow_Hung{
+  animation: slide-in-bottom .7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+@keyframes slide-in-bottom {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

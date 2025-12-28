@@ -1,0 +1,132 @@
+/* Nền mờ */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    /* Làm mờ nền */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Khung nội dung popup */
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    /* Bo góc */
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    /* Bóng mờ */
+    position: relative;
+}
+
+/* Nút đóng popup */
+.close-popup-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Nút submit */
+.form-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Giao diện các nút mạng xã hội */
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.google-login-btn {
+    background-color: #db4437;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.facebook-login-btn {
+    background-color: #4267b2;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Liên kết chuyển đổi qua đăng ký */
+.switch-to-register span {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Container for the input and label */
+.input-container {
+    position: relative;
+    margin: 20px 0;
+}
+
+/* Input field styling */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    /* Thêm khoảng trống để label có thể nằm bên trong */
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    outline: none;
+    background-color: transparent;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    border-color: #007bff;
+}
+
+/* Label styling */
+.form-input-label {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    font-size: 16px;
+    color: #aaa;
+    pointer-events: none;
+    background-color: #fff;
+    padding: 0 5px;
+    transition: all 0.2s ease-in-out;
+    transform: translateY(-50%);
+}
+
+/* Khi input được focus hoặc người dùng nhập dữ liệu */
+.form-input:focus+.form-input-label,
+.form-input:not(:placeholder-shown)+.form-input-label {
+    top: 9px;
+    left: 10px;
+    font-size: 12px;
+    color: #007bff;
+}
