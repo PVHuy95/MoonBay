@@ -34,7 +34,8 @@ const ManageBookings = () => {
 
       try {
         while (true) {
-          const response = await axios.get('http://localhost:8000/api/room_list', {
+          // const response = await axios.get('http://localhost:8000/api/room_list', {
+          const response = await axios.get('/api/room_list', {
             params: { per_page: perPage, page },
           });
           const { data, last_page } = response.data;
@@ -77,7 +78,8 @@ const ManageBookings = () => {
 
       try {
         while (true) {
-          const response = await axios.get('http://localhost:8000/api/booking_manager', {
+          // const response = await axios.get('http://localhost:8000/api/booking_manager', {
+          const response = await axios.get('/api/booking_manager', {
             params: {
               per_page: perPage,
               page,

@@ -32,7 +32,8 @@ const Reviews = ({ checkLogins }) => {
   const fetchReviews = async (page = 1) => {
     try {
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const response = await axios.get('http://localhost:8000/api/reviews', {
+      // const response = await axios.get('http://localhost:8000/api/reviews'
+      const response = await axios.get('/api/reviews', {
         params: {
           page,
           filter_rating: filterRating,

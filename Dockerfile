@@ -20,6 +20,9 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Bật rewrite module
 RUN a2enmod rewrite
 
+# Cho phép .htaccess override (QUAN TRỌNG!)
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
 # Cài đặt gói PHP
 RUN composer install --no-dev --optimize-autoloader
 

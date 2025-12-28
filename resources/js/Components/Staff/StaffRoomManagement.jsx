@@ -55,7 +55,8 @@ function StaffRoomManagement() {
             // Thêm độ trễ để hiển thị hiệu ứng loading
             await new Promise((resolve) => setTimeout(resolve, 400));
 
-            const res = await axios.get("http://localhost:8000/api/rooms");
+            // const res = await axios.get("http://localhost:8000/api/rooms");
+            const res = await axios.get("/api/rooms");
             setRooms(res.data);
         } catch (error) {
             setError("Failed to load room list. Please try again later.");

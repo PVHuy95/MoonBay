@@ -8,7 +8,8 @@ const Home = () => {
     const [offers, setOffers] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/special-offers') // hoặc URL deploy
+        // axios.get('http://localhost:8000/api/special-offers') // hoặc URL deploy
+        axios.get('/api/special-offers')
             .then(response => {
                 const filtered = response.data.filter(offer =>
                     offer.season || offer.free_services || offer.total_bill_threshold || offer.stay_duration_days || offer.other_package_description

@@ -27,7 +27,8 @@ const ReviewsManagement = () => {
         setLoading(true);
         try {
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
-            const res = await axios.get('http://localhost:8000/api/admin/reviews', {
+            // const res = await axios.get('http://localhost:8000/api/admin/reviews', {
+            const res = await axios.get('/api/admin/reviews', {
                 params: {
                     page: pageNumber,
                     sort_rating: sortRating,
