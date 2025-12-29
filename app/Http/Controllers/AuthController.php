@@ -384,7 +384,12 @@ class AuthController extends Controller
             ];
 
             // Redirect về frontend với token và user trong query string
-            $redirectUrl = 'http://localhost:8000/auth/callback?' . http_build_query([
+            // $redirectUrl = 'http://localhost:8000/auth/callback?' . http_build_query([
+            //     'token' => $user->remember_token,
+            //     'user' => json_encode($userData),
+            // ]);
+            $frontendUrl = config('app.url', 'http://localhost:8000');
+            $redirectUrl = $frontendUrl . '/auth/callback?' . http_build_query([
                 'token' => $user->remember_token,
                 'user' => json_encode($userData),
             ]);
@@ -392,7 +397,11 @@ class AuthController extends Controller
             return redirect($redirectUrl);
         } catch (\Exception $e) {
             // Redirect về frontend với lỗi
-            $redirectUrl = 'http://localhost:8000/auth/callback?' . http_build_query([
+            // $redirectUrl = 'http://localhost:8000/auth/callback?' . http_build_query([
+            //     'error' => 'Google login failed: ' . $e->getMessage(),
+            // ]);
+            $frontendUrl = config('app.url', 'http://localhost:8000');
+            $redirectUrl = $frontendUrl . '/auth/callback?' . http_build_query([
                 'error' => 'Google login failed: ' . $e->getMessage(),
             ]);
             return redirect($redirectUrl);
