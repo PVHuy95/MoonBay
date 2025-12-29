@@ -75,10 +75,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
-            'options' => [
-        \PDO::ATTR_EMULATE_PREPARES => true, // Quan trọng cho Transaction Mode (Port 6543)
-    ],
+            'sslmode' => 'prefer'
         ],
 
         'sqlsrv' => [
