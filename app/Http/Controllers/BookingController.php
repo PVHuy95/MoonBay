@@ -14,7 +14,6 @@ class BookingController extends Controller
     public function booking(Request $request)
     {
         try {
-            // Xác thực dữ liệu
             $validatedData = $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'name' => 'required|string|max:255',
@@ -26,11 +25,36 @@ class BookingController extends Controller
                 'member' => 'required|integer|min:1',
                 'price' => 'required|numeric',
                 'total_price' => 'required|numeric',
-                'deposit_paid' => 'required|numeric|min:0', // Thêm trường deposit_paid
-                'checkin_date' => 'required|date',
-                'checkout_date' => 'required|date|after:checkin_date',
-                'status' => 'required|string|in:pending_payment,confirmed,cancelled', // Thêm trường status
+                'deposit_paid' => 'required|numeric|min:0',
+                'checkin_date' => [
+                    'required',
+                    'date',
+                    'after_or_equal:today',
+                    'before_or_equal:' . now()->addMonths(6)->format('Y-m-d'),
+                ],
+                'checkout_date' => [
+                    'required',
+                    'date',
+                    'after:checkin_date',
+                ],
+                
+                'status' => 'required|string|in:pending_payment,confirmed,cancelled',
+            ], [
+                // Custom error messages
+                'checkin_date.after_or_equal' => 'Check-in date must be today or later.',
+                'checkin_date.before_or_equal' => 'You can only book up to 6 months in advance.',
+                'checkout_date.after' => 'Check-out date must be after check-in date.',
             ]);
+            $checkinDate = \Carbon\Carbon::parse($validatedData['checkin_date']);
+            $checkoutDate = \Carbon\Carbon::parse($validatedData['checkout_date']);
+            if ($checkoutDate->diffInDays($checkinDate) < 1) {
+                return response()->json([
+                    'message' => 'Check-out date must be at least 1 day after check-in date.',
+                    'errors' => [
+                        'checkout_date' => ['Check-out date must be at least 1 day after check-in date.']
+                    ]
+                ], 422);
+            }
 
             // Kiểm tra xem room_type có tồn tại trong bảng rooms không
             $roomTypeExists = RoomInfo::where('type', $validatedData['room_type'])->exists();
@@ -215,9 +239,31 @@ class BookingController extends Controller
                 'member' => 'required|integer|min:1',
                 'price' => 'required|numeric',
                 'total_price' => 'required|numeric',
-                'checkin_date' => 'required|date',
-                'checkout_date' => 'required|date|after:checkin_date',
+                
+                // ← SỬA 2 DÒNG NÀY
+                'checkin_date' => [
+                    'required',
+                    'date',
+                    'after_or_equal:today',
+                    'before_or_equal:' . now()->addMonths(6)->format('Y-m-d'),
+                ],
+                'checkout_date' => [
+                    'required',
+                    'date',
+                    'after:checkin_date',
+                ],
+            ], [
+                'checkin_date.after_or_equal' => 'Check-in date must be today or later.',
+                'checkin_date.before_or_equal' => 'You can only book up to 6 months in advance.',
+                'checkout_date.after' => 'Check-out date must be after check-in date.',
             ]);
+            $checkinDate = \Carbon\Carbon::parse($validatedData['checkin_date']);
+            $checkoutDate = \Carbon\Carbon::parse($validatedData['checkout_date']);
+            if ($checkoutDate->diffInDays($checkinDate) < 1) {
+                return response()->json([
+                    'message' => 'Check-out date must be at least 1 day after check-in date.',
+                ], 422);
+            }
 
             // Kiểm tra room_type
             $roomTypeExists = RoomInfo::where('type', $validatedData['room_type'])->exists();
@@ -293,13 +339,12 @@ class BookingController extends Controller
     public function checkAvailableRooms(Request $request)
     {
         try {
-            // Xác thực dữ liệu đầu vào
+            // Validation đơn giản - chỉ check format
             $validatedData = $request->validate([
                 'room_type' => 'required|string',
                 'checkin_date' => 'required|date',
                 'checkout_date' => 'required|date|after:checkin_date',
             ]);
-
             // Kiểm tra xem room_type có tồn tại không
             $roomTypeExists = RoomInfo::where('type', $validatedData['room_type'])->exists();
             if (!$roomTypeExists) {
@@ -307,25 +352,20 @@ class BookingController extends Controller
                     'message' => 'Invalid room type.',
                 ], 422);
             }
-
             // Lấy danh sách phòng thuộc room_type và trạng thái available
             $availableRooms = RoomInfo::where('type', $validatedData['room_type'])
                 ->where('status', 'available')
                 ->pluck('id')
                 ->toArray();
-
             // Kiểm tra các phòng đã được đặt trong khoảng thời gian yêu cầu
             $checkinDate = Carbon::parse($validatedData['checkin_date']);
             $checkoutDate = Carbon::parse($validatedData['checkout_date']);
-
             $bookedRoomIds = Booking::where(function ($query) use ($checkinDate, $checkoutDate) {
                 $query->where('checkin_date', '<=', $checkoutDate)
                     ->where('checkout_date', '>=', $checkinDate);
             })->pluck('room_id')->toArray();
-
             // Lọc các phòng không bị đặt
             $freeRooms = array_diff($availableRooms, $bookedRoomIds);
-
             // Trả về số lượng phòng trống
             return response()->json([
                 'available_rooms' => count($freeRooms),

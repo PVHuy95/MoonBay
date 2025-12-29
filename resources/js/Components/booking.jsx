@@ -79,16 +79,21 @@ const Booking = ({ checkLogin, checkLogins }) => {
     const Maxmember = () => formData.room * maxCapacity;
     const MaxChildren = () => formData.room * 2;
 
+    // Ngày hiện tại (hôm nay)
     const now = new Date();
-    const formatDateTime = (date) => {
+    // Format ngày cho input type="date" (YYYY-MM-DD)
+    const formatDate = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
+        return `${year}-${month}-${day}`;
     };
-    const minCheckin = formatDateTime(now);
+    // Ngày tối thiểu cho check-in (hôm nay)
+    const minCheckin = formatDate(now);
+    // Ngày tối đa cho check-in (6 tháng kể từ hôm nay)
+    const maxCheckinDate = new Date();
+    maxCheckinDate.setMonth(maxCheckinDate.getMonth() + 6);
+    const maxCheckin = formatDate(maxCheckinDate);
 
     const handleChange = (event) => {
         const { id, value } = event.target;
@@ -170,11 +175,15 @@ const Booking = ({ checkLogin, checkLogins }) => {
                     // const totalCapacity = selectedRoom.capacity + 2;
 
                     if (roomType && checkin && checkout && dayjs(checkin).isValid() && dayjs(checkout).isValid()) {
+                        // Format dates to YYYY-MM-DD only
+                        const checkinFormatted = dayjs(checkin).format('YYYY-MM-DD');
+                        const checkoutFormatted = dayjs(checkout).format('YYYY-MM-DD');
+
                         axios.get('/api/available_rooms', {
                             params: {
                                 room_type: roomType,
-                                checkin_date: checkin,
-                                checkout_date: checkout,
+                                checkin_date: checkinFormatted,
+                                checkout_date: checkoutFormatted,
                             },
                         })
                             .then(response => {
@@ -238,16 +247,24 @@ const Booking = ({ checkLogin, checkLogins }) => {
         const checkinDate = new Date(formData.checkin);
         const checkoutDate = new Date(formData.checkout);
         const currentDate = new Date();
-
+        currentDate.setHours(0, 0, 0, 0); // Reset về đầu ngày
+        // Validation 1: Check-in không được là quá khứ
         if (checkinDate < currentDate) {
-            window.showNotification("Check-in time cannot be in the past.", "error");
+            window.showNotification("Check-in date cannot be in the past.", "error");
             return;
         }
-
+        // Validation 2: Check-in không được quá 6 tháng
+        const maxAllowedDate = new Date();
+        maxAllowedDate.setMonth(maxAllowedDate.getMonth() + 6);
+        if (checkinDate > maxAllowedDate) {
+            window.showNotification("You can only book up to 6 months in advance.", "error");
+            return;
+        }
+        // Validation 3: Check-out phải sau check-in ít nhất 1 ngày
         const minCheckoutDate = new Date(checkinDate);
-        minCheckoutDate.setHours(checkinDate.getHours() + 1);
-        if (checkoutDate <= minCheckoutDate) {
-            window.showNotification("Check-out time must be at least 1 hour after check-in.", "error");
+        minCheckoutDate.setDate(minCheckoutDate.getDate() + 1);
+        if (checkoutDate < minCheckoutDate) {
+            window.showNotification("Check-out date must be at least 1 day after check-in date.", "error");
             return;
         }
 
@@ -503,7 +520,16 @@ const Booking = ({ checkLogin, checkLogins }) => {
                             <div className="row g-3">
                                 <div className="col-md-6">
                                     <label htmlFor="checkin" className="form-label">Check-in:</label>
-                                    <input ref={checkinRef} value={formData.checkin} type="date" id="checkin" className="form-control" onChange={handleChange} min={minCheckin} />
+                                    <input
+                                        ref={checkinRef}
+                                        value={formData.checkin}
+                                        type="date"
+                                        id="checkin"
+                                        className="form-control"
+                                        onChange={handleChange}
+                                        min={minCheckin}         // ← Tối thiểu hôm nay
+                                        max={maxCheckin}         // ← Tối đa 6 tháng sau
+                                    />
                                 </div>
                                 <div className="col-md-6">
                                     <label htmlFor="checkout" className="form-label">Check-out:</label>
@@ -514,7 +540,13 @@ const Booking = ({ checkLogin, checkLogins }) => {
                                         id="checkout"
                                         className="form-control"
                                         onChange={handleChange}
-                                        min={formData.checkin ? formatDateTime(new Date(new Date(formData.checkin).setHours(new Date(formData.checkin).getHours() + 1))) : minCheckin}
+                                        min={formData.checkin ? (() => {
+                                            // Check-out phải sau check-in ít nhất 1 ngày
+                                            const minCheckout = new Date(formData.checkin);
+                                            minCheckout.setDate(minCheckout.getDate() + 1);
+                                            return formatDate(minCheckout);
+                                        })() : minCheckin}
+                                        disabled={!formData.checkin} // ← Disable nếu chưa chọn check-in
                                     />
                                 </div>
                             </div>

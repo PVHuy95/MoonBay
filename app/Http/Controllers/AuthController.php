@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Cloudinary as CloudinarySDK;
 
 class AuthController extends Controller
 {
@@ -182,88 +183,105 @@ class AuthController extends Controller
         }
     }
 
-   public function update(Request $request, $id)
-{
-    $user = User::findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
 
-    try {
-        $token = $request->bearerToken();
-        if (!$token) {
-            return response()->json(['message' => 'Token not provided'], 401);
+        try {
+            $token = $request->bearerToken();
+            if (!$token) {
+                return response()->json(['message' => 'Token not provided'], 401);
+            }
+
+            $user = User::where('remember_token', $token)->first();
+            if (!$user) {
+                return response()->json(['message' => 'Invalid token'], 401);
+            }
+
+            if ($user->id != $id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email,' . $id,
+                'phone' => 'nullable|string|max:20',
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            $userData = [
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+            ];
+
+            // Chỉ cập nhật avatar nếu có file mới
+            // if ($request->hasFile('avatar')) {
+            //     Log::info('Avatar file detected:', ['file' => $request->file('avatar')->getClientOriginalName()]);
+
+            //     if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            //         Storage::disk('public')->delete($user->avatar);
+            //         Log::info('Old avatar deleted:', ['path' => $user->avatar]);
+            //     }
+
+            //     $path = $request->file('avatar')->store('avarta_user', 'public');
+            //     Log::info('New avatar stored:', ['path' => $path]);
+            //     $userData['avatar'] = $path;
+            // }
+            if ($request->hasFile('avatar')) {
+                Log::info('Avatar file detected:', ['file' => $request->file('avatar')->getClientOriginalName()]);
+        
+            // XÓA avatar cũ trên Cloudinary nếu có
+            if ($user->avatar && str_starts_with($user->avatar, 'http')) {
+                try {
+                    // Extract public_id từ Cloudinary URL
+                    $publicId = $this->extractCloudinaryPublicId($user->avatar);
+                    if ($publicId) {
+                        Cloudinary::destroy($publicId);
+                        Log::info('Old avatar deleted from Cloudinary:', ['public_id' => $publicId]);
+                    }
+                } catch (\Exception $e) {
+                    Log::warning('Failed to delete old avatar:', ['error' => $e->getMessage()]);
+                }
+            }
+            
+                // Upload ảnh mới
+                $cloudinary = new CloudinarySDK();
+                $result = $cloudinary->uploadApi()->upload($request->file('avatar')->getRealPath());
+                $uploadedFileUrl = $result['secure_url'];
+                Log::info('New avatar uploaded to Cloudinary:', ['url' => $uploadedFileUrl]);
+                $userData['avatar'] = $uploadedFileUrl;
+            }
+
+            $user->update($userData);
+            $updatedUser = User::find($id);
+            Log::info('User updated in database:', ['user' => $updatedUser->toArray()]);
+
+            Booking::where('user_id', $id)->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+            ]);
+
+            // Sử dụng giá trị avatar từ database, nếu null thì giữ giá trị cũ từ prevUser
+            // $avatarUrl = !empty($updatedUser->avatar)
+            //     ? url('/storage/' . $updatedUser->avatar)
+            //     : ($user->avatar ? url('/storage/' . $user->avatar) : '/images/Dat/avatar/default.png');
+            $avatarUrl = $updatedUser->avatar ?? '/images/Dat/avatar/default.png';
+
+            Log::info('Avatar URL:', ['url' => $avatarUrl]);
+
+            return response()->json([
+                'message' => 'User updated successfully',
+                'user' => array_merge($updatedUser->toArray(), [
+                    'avatar' => $avatarUrl,
+                ]),
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Update User Error: ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to update user: ' . $e->getMessage()], 500);
         }
-
-        $user = User::where('remember_token', $token)->first();
-        if (!$user) {
-            return response()->json(['message' => 'Invalid token'], 401);
-        }
-
-        if ($user->id != $id) {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
-            'phone' => 'nullable|string|max:20',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $userData = [
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-        ];
-
-        // Chỉ cập nhật avatar nếu có file mới
-        // if ($request->hasFile('avatar')) {
-        //     Log::info('Avatar file detected:', ['file' => $request->file('avatar')->getClientOriginalName()]);
-
-        //     if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
-        //         Storage::disk('public')->delete($user->avatar);
-        //         Log::info('Old avatar deleted:', ['path' => $user->avatar]);
-        //     }
-
-        //     $path = $request->file('avatar')->store('avarta_user', 'public');
-        //     Log::info('New avatar stored:', ['path' => $path]);
-        //     $userData['avatar'] = $path;
-        // }
-        if ($request->hasFile('avatar')) {
-            Log::info('Avatar file detected:', ['file' => $request->file('avatar')->getClientOriginalName()]);
-
-            $uploadedFileUrl = Cloudinary::upload($request->file('avatar')->getRealPath())->getSecurePath();
-            Log::info('New avatar uploaded to Cloudinary:', ['url' => $uploadedFileUrl]);
-            $userData['avatar'] = $uploadedFileUrl;
-        }
-
-        $user->update($userData);
-        $updatedUser = User::find($id);
-        Log::info('User updated in database:', ['user' => $updatedUser->toArray()]);
-
-        Booking::where('user_id', $id)->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-        ]);
-
-        // Sử dụng giá trị avatar từ database, nếu null thì giữ giá trị cũ từ prevUser
-        // $avatarUrl = !empty($updatedUser->avatar)
-        //     ? url('/storage/' . $updatedUser->avatar)
-        //     : ($user->avatar ? url('/storage/' . $user->avatar) : '/images/Dat/avatar/default.png');
-        $avatarUrl = $updatedUser->avatar ?? '/images/Dat/avatar/default.png';
-
-        Log::info('Avatar URL:', ['url' => $avatarUrl]);
-
-        return response()->json([
-            'message' => 'User updated successfully',
-            'user' => array_merge($updatedUser->toArray(), [
-                'avatar' => $avatarUrl,
-            ]),
-        ], 200);
-    } catch (\Exception $e) {
-        Log::error('Update User Error: ' . $e->getMessage());
-        return response()->json(['message' => 'Failed to update user: ' . $e->getMessage()], 500);
     }
-}
 
     public function changePassword(Request $request, $id)
     {
@@ -409,29 +427,29 @@ class AuthController extends Controller
     }
 
     public function getUser(Request $request)
-{
-    $token = $request->header('Authorization');
-    $token = str_replace('Bearer ', '', $token);
+    {
+        $token = $request->header('Authorization');
+        $token = str_replace('Bearer ', '', $token);
 
-    $user = User::where('remember_token', $token)->first();
+        $user = User::where('remember_token', $token)->first();
 
-    if (!$user) {
-        return response()->json(['message' => 'Unauthorized'], 401);
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'avatar' => $user->avatar,
+            'phone' => $user->phone,
+            'role' => $user->role,
+            'status' => $user->status,
+            'provider' => $user->provider,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+        ]);
     }
-
-    return response()->json([
-        'id' => $user->id,
-        'name' => $user->name,
-        'email' => $user->email,
-        'avatar' => $user->avatar,
-        'phone' => $user->phone,
-        'role' => $user->role,
-        'status' => $user->status,
-        'provider' => $user->provider,
-        'created_at' => $user->created_at,
-        'updated_at' => $user->updated_at,
-    ]);
-}
 
     public function registerbystaff(Request $request)
     {
@@ -468,4 +486,17 @@ class AuthController extends Controller
         }
     }
 
+    /**
+ * Extract Cloudinary public_id from URL
+ * Example: https://res.cloudinary.com/cloud_name/image/upload/v123/folder/image.jpg
+ * Returns: folder/image
+ */
+    private function extractCloudinaryPublicId($url)
+    {
+        // Pattern: .../upload/v[version]/[public_id].[extension]
+        if (preg_match('/\/upload\/(?:v\d+\/)?(.+)\.\w+$/', $url, $matches)) {
+            return $matches[1]; // Returns "folder/image" or "image"
+        }
+        return null;
+    }
 }
