@@ -75,7 +75,7 @@ RUN echo '<VirtualHost *:80>\n\
 </VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 # Cài đặt gói PHP với memory limit cao hơn
 ENV COMPOSER_MEMORY_LIMIT=-1
-RUN composer install --no-dev --optimize-autoloader --verbose
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Phân quyền
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
