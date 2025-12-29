@@ -73,9 +73,9 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 EXPOSE 80
 
 # Start services (migrations + cache + apache)
-CMD sleep 5 && \
+CMD php artisan config:clear && \
+    php artisan route:clear && \
+    php artisan view:clear && \
+    php artisan cache:clear && \
     php artisan migrate --force && \
-    php artisan route:cache && \
-    php artisan config:cache && \
-    php artisan view:cache && \
     apache2-foreground

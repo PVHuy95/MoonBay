@@ -28,8 +28,12 @@ const RoomManagement = () => {
       .then(res => res.json())
       .then(data => {
         const roomsWithImageUrl = data.map(room => {
-          if (room.image && room.image_url) {
-            room.image_url = room.image_url;
+          if (room.image) {
+            // Nếu là URL Cloudinary, dùng nguyên
+            // Nếu là tên file local, tạo URL với prefix
+            room.image_url = room.image.startsWith('http')
+              ? room.image
+              : `/storage/room_types_huy/${room.image}`;
           } else {
             room.image_url = null;
           }

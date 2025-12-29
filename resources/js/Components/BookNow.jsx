@@ -82,8 +82,13 @@ const BookNow = ({ checkLogins }) => {
                                     {/* Hình ảnh với nút Book Now */}
                                     <div className="image-wrapper">
                                         <img
-                                            // src={`/storage/${room.image}`}
-                                            src={room.image || '/images/default-room.png'}
+                                            src={
+                                                room.image
+                                                    ? room.image.startsWith('http')
+                                                        ? room.image                                    // Cloudinary URL
+                                                        : `/storage/room_types_huy/${room.image}`      // Local file
+                                                    : '/images/default-room.png'                     // Fallback
+                                            }
                                             alt={room.name}
                                             className="room-image"
                                         />

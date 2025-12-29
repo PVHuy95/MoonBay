@@ -87,7 +87,13 @@ const Rooms = ({ checkLogins }) => {
                 <div className="room-image">
                   {/* <img src={`/storage/${room.image}`} alt={room.name} /> */}
                   <img
-                    src={room.image || '/images/default-room.png'}
+                    src={
+                      room.image
+                        ? room.image.startsWith('http')
+                          ? room.image                                    // Cloudinary URL
+                          : `/storage/room_types_huy/${room.image}`      // Local file
+                        : '/images/default-room.png'                     // Fallback
+                    }
                     alt={room.name}
                     onError={(e) => {
                       e.target.onerror = null;
