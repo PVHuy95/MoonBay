@@ -122,10 +122,6 @@ const QRPayment = ({ amount, onClose, onConfirm, isDeposit, user, bookingData })
 
   // URL cho mobile app
   const mobileURL = `${window.location.origin}/payment-confirm?data=${encodeURIComponent(qrData)}`;
-  // const baseURL = window.location.hostname === 'localhost'
-  //   ? 'http://192.168.1.7:8000'  // ← ĐỔI THÀNH IP LAPTOP CỦA BẠN
-  //   : window.location.origin;
-// const mobileURL = `${baseURL}/payment-confirm?data=${encodeURIComponent(qrData)}`;
 
   // QR Code URL (sử dụng API QR generator)
   const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(mobileURL)}`;
