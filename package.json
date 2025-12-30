@@ -17,6 +17,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.7.2",
         "@react-oauth/google": "^0.12.1",
+        "@supabase/supabase-js": "^2.89.0",
         "bootstrap": "^5.3.6",
         "bootstrap-icons": "^1.11.3",
         "boxicons": "^2.1.4",
@@ -41,6 +42,7 @@
         "simplebar": "^6.3.1",
         "simplebar-react": "^3.3.1",
         "swiper": "^11.2.6",
+        "uuid": "^13.0.0",
         "vietnamese-lunar-calendar": "^0.0.6"
     }
 }

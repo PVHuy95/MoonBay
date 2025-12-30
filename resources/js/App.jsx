@@ -36,6 +36,7 @@ import Reviews from './Components/Reviews.jsx';
 import ManageBookings from './Components/Admin/ManageBookings.jsx';
 import Chart from './Components/Admin/Chart.jsx';
 import StaffProfile from './Components/Staff/StaffProfile.jsx';
+import PaymentConfirm from './Components/PaymentConfirm';
 //-----------------------------------------------------
 
 //components staff
@@ -236,6 +237,7 @@ const App = () => {
                             </button>
                             <Routes>
                                 <Route path="/reset-password" element={<ResetPassword openLoginPopup={openLoginPopup} />} />
+                                <Route path="/payment-confirm" element={<PaymentConfirm />} />
                                 {/* Các route công khai */}
                                 <Route
                                     path="/"

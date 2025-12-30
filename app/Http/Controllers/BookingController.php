@@ -47,7 +47,7 @@ class BookingController extends Controller
             ]);
             $checkinDate = \Carbon\Carbon::parse($validatedData['checkin_date']);
             $checkoutDate = \Carbon\Carbon::parse($validatedData['checkout_date']);
-            if ($checkoutDate->diffInDays($checkinDate) < 1) {
+            if ($checkoutDate->lte($checkinDate)) {
                 return response()->json([
                     'message' => 'Check-out date must be at least 1 day after check-in date.',
                     'errors' => [

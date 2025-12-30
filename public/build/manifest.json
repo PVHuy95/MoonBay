@@ -80,12 +80,12 @@
     "src": "node_modules/linearicons/dist/web-font/fonts/Linearicons-Free.woff2"
   },
   "resources/js/App.jsx": {
-    "file": "assets/App-PoKa-9yB.js",
+    "file": "assets/App-Cl_Z_PV7.js",
     "name": "App",
     "src": "resources/js/App.jsx",
     "isEntry": true,
     "css": [
-      "assets/App-AYLLsF14.css"
+      "assets/App-L4ma8lIK.css"
     ],
     "assets": [
       "assets/bootstrap-icons-BtvjY1KL.woff2",

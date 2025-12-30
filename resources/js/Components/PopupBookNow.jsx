@@ -35,6 +35,7 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
         member: 1,
         price: '0',
         total_price: '0',
+        phone: ''
     });
     const [isPopUp_deposit, setIsPopUp_deposit] = useState(false);
     const [priceNotification, setPriceNotification] = useState('');
@@ -111,22 +112,23 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
             setSelectedRoomPrice(0);
             setPriceNotification('');
         }
+    }, [isPopupBookNow]);
 
+    // useEffect riêng để set default room type khi mở popup
+    useEffect(() => {
         if (isPopupBookNow && selectedRoomName && roomTypes.length > 0) {
             const defaultRoom = roomTypes.find(room => room.name === selectedRoomName);
-            if (defaultRoom) {
-                const price = defaultRoom.price;
-                const total = Total_price(price, formData.room, formData.checkin, formData.checkout);
+            if (defaultRoom && !formData.roomType) {  // ← Chỉ set khi chưa có roomType
                 setFormData(prev => ({
                     ...prev,
                     roomType: defaultRoom.name,
-                    price: price.toString(),
-                    total_price: total.toString()
+                    price: defaultRoom.price.toString(),
+                    total_price: '0'  // ← Reset về 0, sẽ tính lại khi chọn ngày
                 }));
-                setSelectedRoomPrice(price);
+                setSelectedRoomPrice(defaultRoom.price);
             }
         }
-    }, [isPopupBookNow, selectedRoomName, roomTypes, formData.checkin, formData.checkout, formData.room]);
+    }, [isPopupBookNow, selectedRoomName, roomTypes]);
 
     // Fetch room types from the API
     useEffect(() => {
@@ -168,85 +170,102 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
         fetchRoomTypes();
     }, []);
 
-    const handleChange = useCallback(
-        debounce((event) => {
-            const { id, value } = event.target;
-            // const newValue = id === "member" ? parseInt(value) || 0 : value;
+    // Auto-fill phone từ user profile
+    useEffect(() => {
+        if (user && user.phone) {
+            setFormData(prev => ({
+                ...prev,
+                phone: user.phone
+            }));
+        }
+    }, [user]);
 
-            setFormData((prevData) => {
-                const updatedData = { ...prevData, [id]: value };
+    const handleChange = (event) => {
+        const { id, value } = event.target;
 
-                const basePrice = selectedRoomPrice || 0;
-                const checkinDate = updatedData.checkin;
-                const checkoutDate = updatedData.checkout;
+        setFormData((prevData) => {
+            const updatedData = { ...prevData, [id]: value };
+            if (id === 'checkin') {
+                updatedData.checkout = '';
+            }
+            const basePrice = selectedRoomPrice || 0;
+            const checkinDate = updatedData.checkin;
+            const checkoutDate = updatedData.checkout;
 
-                // Kiểm tra ngày hợp lệ
-                if (checkinDate && checkoutDate && dayjs(checkinDate).isValid() && dayjs(checkoutDate).isValid()) {
-                    // Xử lý thông báo giá ngày lễ/cuối tuần
-                    let notification = '';
-                    const startDate = dayjs(checkinDate);
-                    const endDate = dayjs(checkoutDate);
-                    const specialDays = [];
+            // Kiểm tra ngày hợp lệ
+            if (checkinDate && checkoutDate && dayjs(checkinDate).isValid() && dayjs(checkoutDate).isValid()) {
+                // Xử lý thông báo giá ngày lễ/cuối tuần
+                let notification = '';
+                const startDate = dayjs(checkinDate);
+                const endDate = dayjs(checkoutDate);
+                const specialDays = [];
 
-                    for (let date = startDate; date.isBefore(endDate); date = date.add(1, 'day')) {
-                        const adjustedPrice = PriceHolidayTet(basePrice, date.format('YYYY-MM-DD'));
-                        if (adjustedPrice !== basePrice) {
-                            const isWeekend = [5, 6].includes(date.day());
-                            const isHoliday = adjustedPrice / basePrice === 1.5;
-                            if (isWeekend || isHoliday) {
-                                specialDays.push({
-                                    date: date.format('DD/MM/YYYY'),
-                                    type: isWeekend && isHoliday ? 'Weekend & Holiday' : (isWeekend ? 'Weekend' : 'Holiday'),
-                                    price: adjustedPrice,
-                                });
-                            }
+                for (let date = startDate; date.isBefore(endDate); date = date.add(1, 'day')) {
+                    const adjustedPrice = PriceHolidayTet(basePrice, date.format('YYYY-MM-DD'));
+                    if (adjustedPrice !== basePrice) {
+                        const isWeekend = [5, 6].includes(date.day());
+                        const isHoliday = adjustedPrice / basePrice === 1.5;
+                        if (isWeekend || isHoliday) {
+                            specialDays.push({
+                                date: date.format('DD/MM/YYYY'),
+                                type: isWeekend && isHoliday ? 'Weekend & Holiday' : (isWeekend ? 'Weekend' : 'Holiday'),
+                                price: adjustedPrice,
+                            });
                         }
                     }
-
-                    if (specialDays.length > 0) {
-                        notification = specialDays.map(day =>
-                            `${day.date} (${day.type}): Price is ${formatCurrency(day.price )}/night`
-                        ).join('\n');
-                    }
-
-                    setPriceNotification(notification);
                 }
 
-                return updatedData; // Trả về state cập nhật
-            });
+                if (specialDays.length > 0) {
+                    notification = specialDays.map(day =>
+                        `${day.date} (${day.type}): Price is ${formatCurrency(day.price)}/night`
+                    ).join('\n');
+                }
 
-            // Tính toán tổng giá trị
-            if (id === 'room') {
-                const total = Total_price(selectedRoomPrice, value).toString();
+                setPriceNotification(notification);
+            }
+
+            return updatedData;
+        });
+
+        // Tính toán tổng giá khi thay đổi room, checkin, checkout
+        if (id === 'room' || id === 'checkin' || id === 'checkout') {
+            // Lấy các giá trị cần thiết
+            const roomCount = id === 'room' ? value : formData.room;
+            const checkinDate = id === 'checkin' ? value : formData.checkin;
+            const checkoutDate = id === 'checkout' ? value : formData.checkout;
+
+            // Tính tổng giá nếu đủ thông tin
+            if (checkinDate && checkoutDate && selectedRoomPrice) {
+                const totalPerRoom = calculateExactTotalPrice(selectedRoomPrice, checkinDate, checkoutDate);
+                const totalPrice = totalPerRoom * parseInt(roomCount);
+
                 setFormData((prevData) => ({
                     ...prevData,
-                    total_price: total,
+                    total_price: totalPrice.toString(),
                 }));
             }
+        }
 
-            // Kiểm tra số lượng phòng có sẵn
-            const availableRooms = rooms.filter(r => r.type === formData.roomType && r.status === 'available').length;
-            if (id === "room" && parseInt(value) > availableRooms) {
-                window.showNotification(`Only ${availableRooms} room${availableRooms > 1 ? 's' : ''} available`, "error");
-            }
+        // Kiểm tra số lượng phòng có sẵn
+        const availableRooms = rooms.filter(r => r.type === formData.roomType && r.status === 'available').length;
+        if (id === "room" && parseInt(value) > availableRooms) {
+            window.showNotification(`Only ${availableRooms} room${availableRooms > 1 ? 's' : ''} available`, "error");
+        }
 
-            // Kiểm tra số lượng thành viên không vượt quá sức chứa của phòng
-            const totalGuests = parseInt(formData.member) + parseInt(formData.children || 0);
-            if ((id === "member" || id === "children") && totalGuests > Maxmember()) {
-                window.showNotification(
-                    `Maximum capacity is ${Maxmember(formData.room)} member${Maxmember(formData.room) > 1 ? 's' : ''} for ${formData.room} room${formData.room > 1 ? 's' : ''}. Please reduce the number of members.`, "error");
-            }
+        // Kiểm tra số lượng thành viên
+        const totalGuests = parseInt(formData.member) + parseInt(formData.children || 0);
+        if ((id === "member" || id === "children") && totalGuests > Maxmember()) {
+            window.showNotification(
+                `Maximum capacity is ${Maxmember(formData.room)} member${Maxmember(formData.room) > 1 ? 's' : ''} for ${formData.room} room${formData.room > 1 ? 's' : ''}. Please reduce the number of members.`, "error");
+        }
 
-            // Tính toán giá phòng
-            if (id === 'roomType') {
-                const selectedRoom = roomTypes.find((room) => room.id === parseInt(value));
-                const price = selectedRoom ? selectedRoom.price : 0;
-                setSelectedRoomPrice(price);
-            }
-
-        }, 300),
-        [selectedRoomPrice, roomTypes, selectedRoomName]
-    );
+        // Tính toán giá phòng
+        if (id === 'roomType') {
+            const selectedRoom = roomTypes.find((room) => room.id === parseInt(value));
+            const price = selectedRoom ? selectedRoom.price : 0;
+            setSelectedRoomPrice(price);
+        }
+    };
 
     const formatDateTime = (date) => {
         const year = date.getFullYear();
@@ -260,11 +279,25 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
     const now = new Date();
     const minCheckin = formatDateTime(now);
 
+    // Hàm format ngày cho input type="date" (YYYY-MM-DD)
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+    // Ngày tối thiểu cho check-in (hôm nay)
+    const minCheckinDate = formatDate(now);
+    // Ngày tối đa cho check-in (6 tháng kể từ hôm nay)
+    const maxCheckinDate = new Date();
+    maxCheckinDate.setMonth(maxCheckinDate.getMonth() + 6);
+    const maxCheckin = formatDate(maxCheckinDate);
+
     const handleBookNow = async (e) => {
         e.preventDefault();
 
         // Kiểm tra các trường bắt buộc
-        if (!formData.checkin || !formData.checkout || !formData.member) {
+        if (!formData.checkin || !formData.checkout || !formData.member || !formData.phone) {
             window.showNotification("Please fill in all required fields.", "error");
             return;
         }
@@ -273,18 +306,24 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
         const checkinDate = new Date(formData.checkin);
         const checkoutDate = new Date(formData.checkout);
         const currentDate = new Date();
-
-        // Kiểm tra checkin không được nhỏ hơn thời gian hiện tại
+        currentDate.setHours(0, 0, 0, 0); // Reset về đầu ngày
+        // Validation 1: Check-in không được là quá khứ
         if (checkinDate < currentDate) {
-            window.showNotification("Check-in time cannot be in the past.", "error");
+            window.showNotification("Check-in date cannot be in the past.", "error");
             return;
         }
-
-        // Kiểm tra checkout phải lớn hơn checkin (ít nhất 1 giờ)
+        // Validation 2: Check-in không được quá 6 tháng
+        const maxAllowedDate = new Date();
+        maxAllowedDate.setMonth(maxAllowedDate.getMonth() + 6);
+        if (checkinDate > maxAllowedDate) {
+            window.showNotification("You can only book up to 6 months in advance.", "error");
+            return;
+        }
+        // Validation 3: Check-out phải sau check-in ít nhất 1 ngày
         const minCheckoutDate = new Date(checkinDate);
-        minCheckoutDate.setHours(checkinDate.getHours() + 1);
-        if (checkoutDate <= minCheckoutDate) {
-            window.showNotification("Check-out time must be at least 1 hour after check-in.", "error");
+        minCheckoutDate.setDate(minCheckoutDate.getDate() + 1);
+        if (checkoutDate < minCheckoutDate) {
+            window.showNotification("Check-out date must be at least 1 day after check-in date.", "error");
             return;
         }
 
@@ -316,8 +355,25 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
             window.showNotification("The payment amount exceeds the allowed limit. Please reduce the number of rooms or contact support.", "error");
             return;
         }
+        const bookingData = {
+            user_id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: formData.phone,
+            room_type: formData.roomType,
+            number_of_rooms: parseInt(formData.room),
+            children: parseInt(formData.children),
+            member: parseInt(formData.member),
+            price: parseFloat(selectedRoomPrice),
+            total_price: parseFloat(formData.total_price),
+            deposit_paid: paymentOption === 'deposit' ? amountToPay : 0,
+            checkin_date: formData.checkin,
+            checkout_date: formData.checkout,
+            status: 'confirmed'
+        };
+        localStorage.setItem('pendingBooking', JSON.stringify(bookingData));
         setBookingAmount(amountToPay);
-        setIsPopUp_deposit(true);
+        setIsPaymentPopupOpen(true);
     };
 
     const handlePopupConfirm = (confirmed) => {
@@ -384,11 +440,32 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
                                 <div className="row">
                                     <div className="col-md-6">
                                         <label htmlFor="checkin" className="form-label">Check-in Date:</label>
-                                        <input type="date" id="checkin" className="form-control" min={minCheckin} onChange={handleChange} />
+                                        <input
+                                            type="date"
+                                            id="checkin"
+                                            className="form-control"
+                                            value={formData.checkin}
+                                            min={minCheckinDate}
+                                            max={maxCheckin}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                     <div className="col-md-6">
                                         <label htmlFor="checkout" className="form-label">Check-out Date:</label>
-                                        <input type="date" id="checkout" className="form-control" onChange={handleChange} />
+                                        <input
+                                            type="date"
+                                            id="checkout"
+                                            className="form-control"
+                                            value={formData.checkout}
+                                            min={formData.checkin ? (() => {
+                                                // Check-out phải sau check-in ít nhất 1 ngày
+                                                const minCheckout = new Date(formData.checkin);
+                                                minCheckout.setDate(minCheckout.getDate() + 1);
+                                                return formatDate(minCheckout);
+                                            })() : minCheckinDate}
+                                            disabled={!formData.checkin}  // ← Disable nếu chưa chọn check-in
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                 </div>
                                 <div className="row">
@@ -412,6 +489,22 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
                                         <label>Member:</label>
                                         <input type="number" id="member" className="form-control" min="1" max={Maxmember()} onChange={handleChange} placeholder="1" />
                                     </div>
+                                </div>
+                                {/* Phone Number */}
+                                <div className="form-group mb-3">
+                                    <label htmlFor="phone" className="form-label">
+                                        Phone Number <span className="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        className="form-control"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        placeholder="Enter your phone number"
+                                        pattern="[0-9]*"
+                                    />
                                 </div>
                                 <div className="row payment-option">
                                     <div className="col-md-6">
@@ -462,9 +555,9 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
                                         {/* Cột phải: Deposit, Total Price, Remaining, Amount to Pay Now */}
                                         <div className="popup-booknow col-md-6 view-price">
                                             <p>Deposit (20%): {formatCurrency((parseFloat(formData.total_price) * 0.2))}</p>
-                                            <p>Total Price: {formatCurrency(parseFloat(formData.total_price) )}</p>
+                                            <p>Total Price: {formatCurrency(parseFloat(formData.total_price))}</p>
                                             {paymentOption === 'deposit' && (
-                                                <p>Remaining (Due on Check-in): {formatCurrency(parseFloat(formData.total_price) * 0.8 )}</p>
+                                                <p>Remaining (Due on Check-in): {formatCurrency(parseFloat(formData.total_price) * 0.8)}</p>
                                             )}
                                             <p>Amount to Pay Now: {formatCurrency((paymentOption === 'deposit' ? parseFloat(formData.total_price) * 0.2 : parseFloat(formData.total_price)))}</p>
                                         </div>
@@ -483,6 +576,8 @@ const PopupBookNow = ({ closePopup, isPopupBookNow, selectedRoomName }) => {
                                         onClose={() => setIsPaymentPopupOpen(false)}
                                         onConfirm={handlePaymentConfirm}
                                         isDeposit={paymentOption === 'deposit'}
+                                        user={user}
+                                        bookingData={JSON.parse(localStorage.getItem('pendingBooking') || '{}')}
                                     />
                                 )}
                             </form>

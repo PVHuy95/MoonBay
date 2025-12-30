@@ -10,4 +10,10 @@ export default defineConfig({
     }),
     react(),
   ],
+  server: {
+        host: '0.0.0.0',  // ← THÊM: Cho phép network access
+        hmr: {
+            host: '192.168.1.7',  // ← THÊM: IP laptop của bạn
+        },
+    },
 });
