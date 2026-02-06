@@ -85,9 +85,11 @@ const BookNow = ({ checkLogins }) => {
                                             src={
                                                 room.image
                                                     ? room.image.startsWith('http')
-                                                        ? room.image                                    // Cloudinary URL
-                                                        : `/storage/room_types_huy/${room.image}`      // Local file
-                                                    : '/images/default-room.png'                     // Fallback
+                                                        ? room.image                          
+                                                        : room.image.startsWith('room_types_huy/')
+                                                            ? `/storage/${room.image}`                        
+                                                            : `/storage/room_types_huy/${room.image}`        
+                                                    : '/images/default-room.png'                             
                                             }
                                             alt={room.name}
                                             className="room-image"
